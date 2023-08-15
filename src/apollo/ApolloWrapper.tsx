@@ -21,13 +21,16 @@ export const ApolloProviderWrapper = ({ children }: PropsWithChildren) => {
 
   const client = useMemo(() => {
     const authMiddleware = setContext(async (operation, { headers }) => {
-      //   const token = await getToken({ template: 'grafbase' })
+      // const token = await getToken({ template: 'grafbase' })
+      let response = await (await fetch("api/auth/session")).json();
+
+      let token = response.user.access_token;
 
       return {
         headers: {
           ...headers,
           "x-api-key": process.env.REACT_APP_API_KEY,
-          //   authorization: `Bearer ${token}`,
+          authorization: `Bearer ${token}`,
         },
       };
     });

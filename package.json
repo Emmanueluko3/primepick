@@ -11,13 +11,16 @@
   "dependencies": {
     "@apollo/client": "^3.8.1",
     "@reduxjs/toolkit": "^1.9.5",
+    "@types/jsonwebtoken": "^9.0.2",
     "@types/node": "20.5.0",
     "@types/react": "18.2.20",
     "@types/react-dom": "18.2.7",
+    "bcrypt": "^5.1.0",
     "cloudinary": "^1.40.0",
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.13",
     "graphql": "^16.7.1",
+    "jsonwebtoken": "^9.0.1",
     "next": "13.4.13",
     "next-auth": "^4.23.0",
     "next-redux-wrapper": "^8.1.0",
@@ -28,6 +31,7 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "autoprefixer": "^10.4.15",
     "postcss": "^8.4.27",
     "tailwindcss": "^3.3.3"

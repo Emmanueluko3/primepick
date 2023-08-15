@@ -14,9 +14,9 @@ const ProductView: React.FC = () => {
   const dispatch = useDispatch();
   const reduxStore: any = useSelector(selectCartState);
 
-  console.log("store is ", reduxStore.cart.cart);
+  console.log("store is ", reduxStore?.cart?.cart);
 
-  const isProductInCart = reduxStore?.cart.cart.some(
+  const isProductInCart = reduxStore?.cart?.cart?.some(
     (item: any) => item.id === product.id
   );
 

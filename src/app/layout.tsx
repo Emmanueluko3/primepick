@@ -3,7 +3,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import AppWrapper from "@/context/auth";
-import { ApolloProviderWrapper } from "@/ApolloWrapper";
+import { ApolloProviderWrapper } from "@/apollo/ApolloWrapper";
 // import { Provider } from "react-redux";
 import { wrapper } from "../store/store";
 import { PersistGate } from "redux-persist/integration/react";

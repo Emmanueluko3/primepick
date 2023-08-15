@@ -232,11 +232,11 @@ const CreateListing: React.FC = () => {
       <Navbar />
       <div className="w-[90%] mx-auto py-14">
         {productType === null ? (
-          <h2 className="text-4xl font-semibold mb-8">
+          <h2 className="lg:text-4xl text-3xl font-semibold mb-8">
             <span className="text-customGreen italic">Choose</span> listing type
           </h2>
         ) : (
-          <h2 className="text-4xl font-semibold mb-8">
+          <h2 className="lg:text-4xl text-3xl font-semibold mb-8">
             {productType === 0 && (
               <span>
                 Item Listing{" "}
@@ -264,13 +264,13 @@ const CreateListing: React.FC = () => {
               <div
                 onClick={() => setSelectedType(index)}
                 key={index}
-                className={`w-[30%] ${
+                className={`lg:w-[30%] ${
                   selectedType === index
                     ? "border-customGreen border-2"
                     : "border-[#ACACAC] border"
                 } cursor-pointer hover:border-customGreen p-5 py-14 rounded-lg flex flex-col justify-center items-center`}
               >
-                <div className="w-44 h-20">
+                <div className="lg:w-44 lg:h-20">
                   <Image src={item.image} className="w-full h-full" alt="" />
                 </div>
                 <h3 className="mb-3 mt-5 font-semibold text-2xl">

@@ -1,15 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import AuthButton from "../../atoms/buttons/authButton";
+import AuthButton from "../../components/atoms/buttons/authButton";
 import Google from "../../atoms/icons/Google.png";
 import Facebook from "../../atoms/icons/Facebook.png";
-import Input from "../../atoms/inputs/input";
+import Input from "../../components/atoms/inputs/input";
 // import { Link } from "react-router-dom";
-import { useAppContext } from "../../../context/auth";
-import Button from "../../atoms/buttons/button";
-import { gql, useQuery } from "@apollo/client";
+import { useAppContext } from "../../context/auth";
+import Button from "../../components/atoms/buttons/button";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import Link from "next/link";
+import { getCsrfToken, signIn } from "next-auth/react";
 
 const FormSection: React.FC = () => {
   const [isRegistered, setIsRegistered] = useState(true);
@@ -35,25 +36,65 @@ const FormSection: React.FC = () => {
   //   }
   // `);
 
-  const handleLogin = () => {
-    const user = {
-      email: email,
+  const handleLogin = async (e: Event) => {
+    e.preventDefault();
+    const credentials = {
+      email,
+      password,
+      redirect: false,
+      csrfToken: await getCsrfToken(),
       // passwrd: password,
       // location: location,
       // {email: "admin@email.com"}
     };
 
-    console.log("user is ", user);
-    setRegistered(true);
+    let signInResponse = await signIn("credentials", credentials);
+
+    console.log("signin response", signInResponse);
+    // setRegistered(true);
   };
 
-  const handleRegister = () => {
-    const user = {
+  const handleRegister = async (e: Event) => {
+    e.preventDefault();
+    // const [addUser, { data, error, loading }] = useMutation(gql`
+    //   mutation UserCreate($input: UserCreateInput!) {
+    //     userCreate(input: $input) {
+    //       user {
+    //         name
+    //         email
+    //         location
+    //         id
+    //       }
+    //     }
+    //   }
+    // `);
+
+    const userData = {
       email: email,
-      fullName: fullName,
+      name: fullName,
+      password: password,
       location: location,
     };
-    setRegistered(true);
+
+    console.log("data", userData);
+
+    const registeredUser = await (
+      await fetch("api/register", {
+        method: "POST",
+        body: JSON.stringify({ userData: userData }),
+      })
+    ).json();
+
+    console.log("registeredUser", registeredUser);
+
+    let signInResponse = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    console.log("signin response", signInResponse);
+    // setRegistered(true);
   };
 
   return (

@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import Logo from "../../../assets/Logo.svg";
+import Logo from "../../assets/Logo.svg";
 import FormSection from "./formSection";
-import Avatar from "../../atoms/icons/Avatar.svg";
+import Avatar from "../../components/atoms/icons/Avatar.svg";
 
 const Auths: React.FC = () => {
   const reviews = [Avatar, Avatar, Avatar, Avatar];
