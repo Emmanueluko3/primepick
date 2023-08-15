@@ -32,10 +32,10 @@ const suggestedPicks = [
 const Suggestions: React.FC = () => {
   return (
     <div className="py-10 mx-auto w-[90%]">
-      <h3 className="text-4xl mb-5">You may Also Like</h3>
+      <h3 className="lg:text-4xl text-3xl mb-5">You may Also Like</h3>
       <div className="flex justify-between flex-wrap">
         {suggestedPicks.map((item, index) => (
-          <div key={index} className="w-[23.5%] mb-6">
+          <div key={index} className="lg:w-[23.5%] w-[48%] mb-6">
             <ProductCard
               id={index}
               image={item.image}

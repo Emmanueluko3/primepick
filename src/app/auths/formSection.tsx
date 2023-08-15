@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 
 import React, { useState } from "react";
 import AuthButton from "../../components/atoms/buttons/authButton";
@@ -11,6 +11,7 @@ import Button from "../../components/atoms/buttons/button";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import Link from "next/link";
 import { getCsrfToken, signIn } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 const FormSection: React.FC = () => {
   const [isRegistered, setIsRegistered] = useState(true);
@@ -20,54 +21,34 @@ const FormSection: React.FC = () => {
   const [location, setLocation] = useState("");
   const [password, setPassword] = useState("");
 
-  // const [user: fetchUserGQL, {
-  //   loading: userFetchLoading,
-  //   error: userFetchError,
-  //   data: userFetchData,
-  // }] = useQuery(gql`
-  //   query User($input: UserByInput) {
-  //     user(by: $input) {
-  //       email
-  //       name
-  //       passwordHash
-  //       id
-  //       location
-  //     }
-  //   }
-  // `);
-
-  const handleLogin = async () => {
-    // e.preventDefault();
+  const handleLogin = async (e: any) => {
+    e.preventDefault();
     const credentials = {
       email,
       password,
       redirect: false,
       csrfToken: await getCsrfToken(),
+
       // passwrd: password,
       // location: location,
       // {email: "admin@email.com"}
     };
 
+    console.log(`Credentials`, credentials);
+
     let signInResponse = await signIn("credentials", credentials);
 
+    if (!signInResponse?.error) {
+      console.error("login failed", signInResponse);
+    }
+
     console.log("signin response", signInResponse);
-    // setRegistered(true);
+    setRegistered(true);
+    redirect("/profile");
   };
 
-  const handleRegister = async () => {
-    // e.preventDefault();
-    // const [addUser, { data, error, loading }] = useMutation(gql`
-    //   mutation UserCreate($input: UserCreateInput!) {
-    //     userCreate(input: $input) {
-    //       user {
-    //         name
-    //         email
-    //         location
-    //         id
-    //       }
-    //     }
-    //   }
-    // `);
+  const handleRegister = async (e: any) => {
+    e.preventDefault();
 
     const userData = {
       email: email,
@@ -75,8 +56,6 @@ const FormSection: React.FC = () => {
       password: password,
       location: location,
     };
-
-    console.log("data", userData);
 
     const registeredUser = await (
       await fetch("api/register", {
@@ -93,12 +72,12 @@ const FormSection: React.FC = () => {
       redirect: false,
     });
 
-    console.log("signin response", signInResponse);
-    // setRegistered(true);
+    setRegistered(true);
+    redirect("/profile");
   };
 
   return (
-    <div className="p-12 h-screen w-full flex items-start justify-center flex-col">
+    <div className="lg:p-12 p-8 h-screen w-full flex items-start justify-center flex-col">
       <Link
         href="/"
         className="py-3 px-5 hover:text-white bg-customLightGreen rounded-full flex justify-center items-center mb-6 text-customGreen font-semibold hover:bg-customGreen"
@@ -112,7 +91,7 @@ const FormSection: React.FC = () => {
           <h2 className="text-customGreen text-2xl font-bold mb-2">
             Create your account.
           </h2>
-          <p className="font-medium mb-7">
+          <p className="font-medium text-base lg:mb-7 mb-5">
             Start your website in seconds. Already have an account?{" "}
             <span
               onClick={() => setIsRegistered(!isRegistered)}
@@ -125,10 +104,10 @@ const FormSection: React.FC = () => {
       )}
 
       <div className="flex justify-between mb-3 items-center w-full">
-        <div className="w-[48%]">
+        <div className="lg:w-[48%]">
           {/* <AuthButton label="Sign up with Google" icon={Google} /> */}
         </div>
-        <div className="w-[48%]">
+        <div className="lg:w-[48%]">
           {/* <AuthButton label="Facebook" icon={Facebook} /> */}
         </div>
       </div>
@@ -139,8 +118,8 @@ const FormSection: React.FC = () => {
       {isRegistered ? (
         <>
           <form
-            onSubmit={async () => {
-              await handleLogin();
+            onSubmit={async (e) => {
+              await handleLogin(e);
             }}
             action=""
             className="flex w-full justify-between flex-wrap"
@@ -207,13 +186,13 @@ const FormSection: React.FC = () => {
         </>
       ) : (
         <form
-          onSubmit={() => {
-            handleRegister;
+          onSubmit={async () => {
+            await handleRegister();
           }}
           action=""
           className="flex w-full justify-between flex-wrap"
         >
-          <div className="w-[48%] mb-2">
+          <div className="lg:w-[48%] mb-2">
             <label htmlFor="email" className="mb-2">
               Email
             </label>
@@ -225,7 +204,7 @@ const FormSection: React.FC = () => {
               placeholder="name@flowbite.com"
             />
           </div>
-          <div className="w-[48%] mb-2">
+          <div className="lg:w-[48%] mb-2">
             <label htmlFor="fullName" className="mb-2">
               Full Name
             </label>
@@ -237,7 +216,7 @@ const FormSection: React.FC = () => {
               placeholder="e.g. Bonnie Green"
             />
           </div>
-          <div className="w-[48%] mb-4">
+          <div className="lg:w-[48%] mb-4">
             <label htmlFor="location" className="mb-2">
               Location
             </label>
@@ -249,7 +228,7 @@ const FormSection: React.FC = () => {
               placeholder="USA"
             />
           </div>
-          <div className="w-[48%] mb-4">
+          <div className="lg:w-[48%] mb-4">
             <label htmlFor="password" className="mb-2">
               Password
             </label>

@@ -13,7 +13,7 @@ const Auths: React.FC = () => {
     <div className="flex justify-between items-center">
       <FormSection />
 
-      <div className="bg-authImage w-full h-screen bg-cover p-20 text-white bg-no-repeat flex flex-col justify-center">
+      <div className="bg-authImage hidden lg:flex w-full h-screen bg-cover p-20 text-white bg-no-repeat flex-col justify-center">
         <p className="flex items-center text-white font-semibold text-3xl mb-6">
           <Image src={Logo} alt="Logo" />
           PrimePicks

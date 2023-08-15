@@ -46,15 +46,15 @@ const Explore: React.FC = () => {
     <>
       <Navbar />
       <div className="flex justify-between w-[90%] py-10 mx-auto">
-        <div className="w-[28%]">
+        <div className="w-[28%] hidden lg:flex">
           <Category />
         </div>
-        <div className="w-[70%]">
+        <div className="lg:w-[70%]">
           <div className=".w-full">
             <h2 className="text-2xl font-semibold mb-3">Television & Video</h2>
             <div className="w-full flex justify-between flex-wrap">
               {products.map((item, index) => (
-                <div key={index} className="w-[32%] mb-6">
+                <div key={index} className="lg:w-[32%] w-[48%] mb-6">
                   <ProductCard
                     id={item.id}
                     image={item.imageUrls[0]}
@@ -71,13 +71,15 @@ const Explore: React.FC = () => {
       <Suggestions />
       <div className="py-10 mx-auto w-[90%]">
         <h3 className="text-4xl mb-5 font-semibold">Reviews</h3>
-        <div className="flex justify-between">
+        <div className="flex justify-between flex-wrap overflow-y-auto w-full">
           {reviews.map((item, index) => (
             <div
               key={index}
-              className="w-[32%] flex flex-col justify-between p-3 bg-[#CDCDCD33] rounded-lg"
+              className="lg:w-[32%] border-b-4 flex flex-col justify-between p-3 bg-[#CDCDCD33] rounded-lg"
             >
-              <p className="leading-[26px] text-[16px]">“{item.comment}”</p>
+              <p className="leading-[26px] lg:text-[16px] text-sm">
+                “{item.comment}”
+              </p>
               <div className="flex py-3 mt-auto">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

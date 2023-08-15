@@ -6,11 +6,11 @@ import {
   gql,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import { NextApiRequest, NextApiResponse } from "next";
 import { hashSync, compare } from "bcrypt";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
+  console.log("register hittings");
   let { userData } = await req.json();
 
   const httpLink = new HttpLink({
