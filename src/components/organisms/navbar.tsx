@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectCartState, addCartItem } from "@/store/cartSlice";
 
 const Navbar: React.FC = () => {
@@ -15,11 +15,12 @@ const Navbar: React.FC = () => {
 
   const reduxStore: any = useSelector(selectCartState);
 
-  // const dispatch = useDispatch();
-  // dispatch(addCartItem({ productId: "tesese", quantity: 1, price: 43434 }));
-
   return (
-    <div className="w-[90%] mx-auto py-4 h-[60vh] lg:h-auto flex justify-between lg:items-center flex-col lg:flex-row">
+    <div
+      className={`${
+        showLinks ? "h-screen" : ""
+      } w-[90%] mx-auto py-4 lg:h-auto flex justify-between lg:items-center flex-col lg:flex-row`}
+    >
       <div className="flex items-center">
         <button
           onClick={() => setShowLinks(!showLinks)}
@@ -73,20 +74,25 @@ const Navbar: React.FC = () => {
         </div>
       </div>
 
-      <ul className="flex lg:items-center flex-col lg:flex-row">
+      <ul
+        className={` ${
+          showLinks ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0"
+        }   lg:opacity-100 lg:scale-y-100  transition duration-300 ease-out transform flex lg:items-center flex-col lg:flex-row`}
+      >
         {navLinks.map((item, index) => (
-          <li key={index}>
-            <Link
-              href={item.href}
-              className="lg:mx-4 lg:my-0 my-2 font-medium text-[16px]"
-            >
+          <li className={`${showLinks ? "my-2 " : ""} lg:my-0`} key={index}>
+            <Link href={item.href} className="lg:mx-4 font-medium text-[16px]">
               {item.label}
             </Link>
           </li>
         ))}
       </ul>
 
-      <div className="flex w-auto lg:items-center flex-col lg:flex-row">
+      <div
+        className={` ${
+          showLinks ? "opacity-100 scale-y-100" : "opacity-0 scale-y-0"
+        }   lg:opacity-100 lg:scale-y-100  transition duration-300 ease-out transform flex w-auto lg:items-center flex-col lg:flex-row`}
+      >
         <Link
           href="/profile"
           className="flex lg:mr-6 mb-2 lg:mb-0 font-medium hover:opacity-80 text-[16px]"
