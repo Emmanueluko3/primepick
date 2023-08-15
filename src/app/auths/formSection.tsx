@@ -36,8 +36,8 @@ const FormSection: React.FC = () => {
   //   }
   // `);
 
-  const handleLogin = async (e: Event) => {
-    e.preventDefault();
+  const handleLogin = async () => {
+    // e.preventDefault();
     const credentials = {
       email,
       password,
@@ -54,8 +54,8 @@ const FormSection: React.FC = () => {
     // setRegistered(true);
   };
 
-  const handleRegister = async (e: Event) => {
-    e.preventDefault();
+  const handleRegister = async () => {
+    // e.preventDefault();
     // const [addUser, { data, error, loading }] = useMutation(gql`
     //   mutation UserCreate($input: UserCreateInput!) {
     //     userCreate(input: $input) {
@@ -132,14 +132,16 @@ const FormSection: React.FC = () => {
           {/* <AuthButton label="Facebook" icon={Facebook} /> */}
         </div>
       </div>
-      <h4 className="w-full mb-3 text-[#6B7180] text-[16] flex justify-between items-center">
+      {/* <h4 className="w-full mb-3 text-[#6B7180] text-[16] flex justify-between items-center">
         <span className="h-[2px] bg-[#E5E6EB] flex w-[45%]"></span> or{" "}
         <span className="h-[2px] bg-[#E5E6EB] flex w-[45%]"></span>
-      </h4>
+      </h4> */}
       {isRegistered ? (
         <>
           <form
-            onSubmit={handleLogin}
+            onSubmit={async () => {
+              await handleLogin();
+            }}
             action=""
             className="flex w-full justify-between flex-wrap"
           >
@@ -205,7 +207,9 @@ const FormSection: React.FC = () => {
         </>
       ) : (
         <form
-          onSubmit={handleRegister}
+          onSubmit={() => {
+            handleRegister;
+          }}
           action=""
           className="flex w-full justify-between flex-wrap"
         >
