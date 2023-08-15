@@ -15,7 +15,7 @@ const config: Config = {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
-        authImage: "url('/../src/assets/authimg.svg')",
+        authImage: "url('../../src/assets/authimg.svg')",
       },
       colors: {
         customGreen: "#24A843",

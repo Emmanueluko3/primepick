@@ -4,6 +4,7 @@ import React from "react";
 import Logo from "../../assets/Logo.svg";
 import FormSection from "./formSection";
 import Avatar from "../../components/atoms/icons/Avatar.svg";
+import Image from "next/image";
 
 const Auths: React.FC = () => {
   const reviews = [Avatar, Avatar, Avatar, Avatar];
@@ -14,7 +15,7 @@ const Auths: React.FC = () => {
 
       <div className="bg-authImage w-full h-screen bg-cover p-20 text-white bg-no-repeat flex flex-col justify-center">
         <p className="flex items-center text-white font-semibold text-3xl mb-6">
-          <img src={Logo} alt="Logo" />
+          <Image src={Logo} alt="Logo" />
           PrimePicks
         </p>
 
@@ -29,7 +30,7 @@ const Auths: React.FC = () => {
         <div className="flex items-center">
           <div className="flex justify-center items-center flex-row mr-10">
             {reviews.map((item, index) => (
-              <img
+              <Image
                 key={index}
                 className="ml-[-5%] w-8 h-8 rounded-full"
                 src={item}
