@@ -66,6 +66,7 @@ const CreateListing: React.FC = () => {
   const [productType, setProductType] = useState<number | null>(null);
 
   const imageRef = useRef<any>(null);
+  const [preview, setPreview] = useState<any>([]);
   const [imageUrl, setImageUrl] = useState("");
   const [productTitle, setProductTitle] = useState("");
   const [productCategory, setProductCategory] = useState("");
@@ -213,17 +214,14 @@ const CreateListing: React.FC = () => {
     console.log("mutation", mutation);
   };
 
-  const [preview, setPreview] = useState<any>([]);
-  debugger;
   const handleImage = async (event: any): Promise<void> => {
-    const file = event.target.files[0];
-    const base64 = await convertBase64(file);
-    setPreview([...preview, base64]);
-    // onChange && onChange( String(base64) || "", name);
+    const reader = new FileReader();
+    reader.onload = () => {
+      setPreview([...preview, reader.result]);
+    };
+
+    reader.readAsDataURL(event.target.files[0]);
   };
-  useEffect(() => {
-    // setPreview(value || "");
-  }, []);
 
   console.log("Image is ", preview);
 
@@ -259,7 +257,7 @@ const CreateListing: React.FC = () => {
         )}
 
         {productType === null ? (
-          <div className="w-[90%] mx-auto flex justify-between mb-16">
+          <div className="w-[90%] mx-auto lg:flex-row flex-col flex justify-between mb-16">
             {listingType.map((item, index) => (
               <div
                 onClick={() => setSelectedType(index)}
@@ -268,12 +266,12 @@ const CreateListing: React.FC = () => {
                   selectedType === index
                     ? "border-customGreen border-2"
                     : "border-[#ACACAC] border"
-                } cursor-pointer hover:border-customGreen p-5 py-14 rounded-lg flex flex-col justify-center items-center`}
+                } cursor-pointer hover:border-customGreen mb-5 lg:mb-0 p-5 lg:py-14 rounded-lg flex flex-col justify-center items-center`}
               >
-                <div className="lg:w-44 lg:h-20">
+                <div className="lg:w-44 w-20 h-14 lg:h-20">
                   <Image src={item.image} className="w-full h-full" alt="" />
                 </div>
-                <h3 className="mb-3 mt-5 font-semibold text-2xl">
+                <h3 className="lg:mb-3 lg:mt-5 mt-3 mb-2 font-semibold text-2xl">
                   {item.title}
                 </h3>
                 <p className="text-sm text-[#585858] text-center w-full">
@@ -286,30 +284,48 @@ const CreateListing: React.FC = () => {
           <>
             <form
               action=""
-              className="mx-auto mb-16 w-[70%] border border-[#ACACAC] rounded-lg p-5"
+              className="mx-auto mb-16 lg:w-[70%] border border-[#ACACAC] rounded-lg p-5"
             >
               <div
                 onClick={() => imageRef.current.click()}
-                className="cursor-pointer border relative border-[#ACACAC] h-80 w-full rounded-md flex justify-center items-center flex-col mb-5"
+                className="cursor-pointer border relative border-[#ACACAC] h-40 lg:h-80 w-full rounded-md flex flex-wrap mb-5 z-0"
               >
                 {preview.map((item: string, index: number) => (
-                  <Image key={index} src={item} alt="Image" />
+                  <div className="border-2 z-10 relative rounded-lg border-customGreen p-1 w-[28%] h-[40%] m-2">
+                    <span
+                      onClick={() => {
+                        preview.filter((item: string) => item !== item);
+                      }}
+                      className="text-white h-6 w-6 bg-customGreen p-1 font-extrabold rounded-full absolute right-1 top-1 flex items-center justify-center"
+                    >
+                      X
+                    </span>
+                    <Image
+                      key={index}
+                      src={item}
+                      width={500}
+                      height={500}
+                      className="w-full h-full rounded-lg"
+                      alt="Image"
+                    />
+                  </div>
                 ))}
 
-                <Image src={preview[0]} alt="Image" />
-
-                {preview.lenght !== 4 && (
-                  <div
-                    onClick={() => imageRef.current.click()}
-                    className="absolute flex flex-col items-center justify-center"
-                  >
-                    <div className="rounded-full w-16 h-16 bg-[#CDCDCD66] flex justify-center items-center mb-5">
-                      <Image src={Imageupload} className="h-10 w-10" alt="" />
+                {preview.length <= 5 && (
+                  <div className="absolute z-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center">
+                    <div className="rounded-full w-10 h-10 lg:w-16 lg:h-16 bg-[#CDCDCD66] flex justify-center items-center mb-3 lg:mb-5">
+                      <Image
+                        src={Imageupload}
+                        className="w-8 h-6 lg:h-10 lg:w-10"
+                        alt=""
+                      />
                     </div>
-                    <h3 className="font-semibold text-2xl mb-[6px]">
+                    <h3 className="font-semibold lg:text-2xl text-xl mb-1 lg:mb-[6px]">
                       Add Photos
                     </h3>
-                    <p className="text-base">You can add up to five photos</p>
+                    <p className="lg:text-base text-sm">
+                      You can add up to six photos
+                    </p>
                     <input
                       onChange={handleImage}
                       type="file"
@@ -338,7 +354,7 @@ const CreateListing: React.FC = () => {
               {productType === 2 ? (
                 <>
                   <div className="w-full flex justify-between items-center flex-wrap">
-                    <div className="w-[48%] mb-5">
+                    <div className="lg:w-[48%] w-full mb-5">
                       <label
                         htmlFor="listing"
                         className="text-semibold font-semibold"
@@ -369,7 +385,7 @@ const CreateListing: React.FC = () => {
                       </select>
                     </div>
 
-                    <div className="w-[48%] mb-5">
+                    <div className="lg:w-[48%] w-full mb-5">
                       <label
                         htmlFor="homeType"
                         className="text-semibold font-semibold"
@@ -396,7 +412,7 @@ const CreateListing: React.FC = () => {
                         <option value="For Sale">For Sale</option>
                       </select>
                     </div>
-                    <div className="w-[48%] mb-5">
+                    <div className="lg:w-[48%] w-full mb-5">
                       <label
                         htmlFor="bedroom"
                         className="text-semibold font-semibold"
@@ -413,7 +429,7 @@ const CreateListing: React.FC = () => {
                         placeholder="Number of Bedrooms"
                       />
                     </div>
-                    <div className="w-[48%] mb-5">
+                    <div className="lg:w-[48%] w-full mb-5">
                       <label
                         htmlFor="bathroom"
                         className="text-semibold font-semibold"
@@ -434,9 +450,9 @@ const CreateListing: React.FC = () => {
                 </>
               ) : (
                 <>
-                  <div className="w-full mb-5 flex justify-between items-center">
+                  <div className="w-full  flex justify-between items-center flex-wrap">
                     {productType === 0 ? (
-                      <div className="w-[48%]">
+                      <div className="lg:w-[48%] w-full mb-5">
                         <label
                           htmlFor="category"
                           className="text-semibold font-semibold"
@@ -467,7 +483,7 @@ const CreateListing: React.FC = () => {
                         </select>
                       </div>
                     ) : (
-                      <div className="w-[48%]">
+                      <div className="lg:w-[48%] w-full mb-5">
                         <label
                           htmlFor="vehicleType"
                           className="text-semibold font-semibold"
@@ -498,7 +514,7 @@ const CreateListing: React.FC = () => {
                         </select>
                       </div>
                     )}
-                    <div className="w-[48%]">
+                    <div className="lg:w-[48%] w-full mb-5">
                       <label
                         htmlFor="condition"
                         className="text-semibold font-semibold"
@@ -531,7 +547,7 @@ const CreateListing: React.FC = () => {
                   </div>
                   {productType === 1 && (
                     <div className="w-full mb-5 flex justify-between items-center">
-                      <div className="w-[48%]">
+                      <div className="lg:w-[48%] w-full">
                         <label
                           htmlFor="year"
                           className="text-semibold font-semibold"
@@ -549,7 +565,7 @@ const CreateListing: React.FC = () => {
                           placeholder="2023"
                         />
                       </div>
-                      <div className="w-[48%]">
+                      <div className="lg:w-[48%] w-full">
                         <label
                           htmlFor="model"
                           className="text-semibold font-semibold"
@@ -589,8 +605,8 @@ const CreateListing: React.FC = () => {
                   />
                 </div>
               </div>
-              <div className="w-full mb-5 flex justify-between items-center">
-                <div className="w-[48%]">
+              <div className="w-full flex justify-between items-center flex-wrap">
+                <div className="lg:w-[48%] w-full mb-5">
                   <label
                     htmlFor="location"
                     className="text-semibold font-semibold"
@@ -607,7 +623,7 @@ const CreateListing: React.FC = () => {
                     placeholder="Seller’s location"
                   />
                 </div>
-                <div className="w-[48%]">
+                <div className="lg:w-[48%] w-full mb-5">
                   <label
                     htmlFor="phone"
                     className="text-semibold font-semibold"
@@ -663,7 +679,7 @@ const CreateListing: React.FC = () => {
               )}
             </form>
             <div className="w-[70%] mx-auto flex justify-between items-center">
-              <div className="w-[25%]">
+              <div className="w-[40%] lg:w-[25%]">
                 <button
                   onClick={() => handleGoBack()}
                   className="rounded-full border border-[#828282] hover:bg-gray-300 font-medium py-2 px-4 w-full flex justify-center items-center text-[#585858] text-base"
@@ -672,7 +688,7 @@ const CreateListing: React.FC = () => {
                 </button>
               </div>
 
-              <div className="w-[25%]">
+              <div className="w-[40%] lg:w-[25%]">
                 <Button
                   onClick={() => {
                     submitProduct();
@@ -687,7 +703,7 @@ const CreateListing: React.FC = () => {
 
         {productType === null && (
           <div className="w-[90%] mx-auto flex justify-between items-center">
-            <div className="w-[25%]">
+            <div className="w-[40%] lg:w-[25%]">
               <Link
                 href="/"
                 className="rounded-full border border-[#828282] hover:bg-gray-300 font-medium py-2 px-4 w-full flex justify-center items-center text-[#585858] text-base"
@@ -696,7 +712,7 @@ const CreateListing: React.FC = () => {
               </Link>
             </div>
 
-            <div className="w-[25%]">
+            <div className="w-[40%] lg:w-[25%]">
               <Button onClick={() => setProductType(selectedType)}>
                 Continue
               </Button>
