@@ -57,10 +57,6 @@ const homeTypes = [
   "Transitional",
 ];
 
-const preset_key = process.env.REACT_APP_PRESET_KEY;
-// const cloud_name = process.env.REACT_APP_CLOUD_NAME;
-const api_url: any = process.env.REACT_APP_CLOUDINARY_URL;
-
 const CreateListing: React.FC = () => {
   const [selectedType, setSelectedType] = useState<number | null>(null);
   const [productType, setProductType] = useState<number | null>(null);
@@ -260,7 +256,10 @@ const CreateListing: React.FC = () => {
           <div className="w-[90%] mx-auto lg:flex-row flex-col flex justify-between mb-16">
             {listingType.map((item, index) => (
               <div
-                onClick={() => setSelectedType(index)}
+                onClick={() => {
+                  setSelectedType(index);
+                  console.log("index", index);
+                }}
                 key={index}
                 className={`lg:w-[30%] ${
                   selectedType === index
@@ -286,22 +285,19 @@ const CreateListing: React.FC = () => {
               action=""
               className="mx-auto mb-16 lg:w-[70%] border border-[#ACACAC] rounded-lg p-5"
             >
-              <div
-                onClick={() => imageRef.current.click()}
-                className="cursor-pointer border relative border-[#ACACAC] h-40 lg:h-80 w-full rounded-md flex flex-wrap mb-5 z-0"
-              >
+              <div className="border relative border-[#ACACAC] h-40 lg:h-80 w-full rounded-md flex flex-wrap mb-5 z-0">
                 {preview.map((item: string, index: number) => (
-                  <div className="border-2 z-10 relative rounded-lg border-customGreen p-1 w-[28%] h-[40%] m-2">
+                  <div
+                    key={index}
+                    className="border-2 z-10 relative rounded-lg border-customGreen p-1 w-[28%] h-[40%] m-2"
+                  >
                     <span
-                      onClick={() => {
-                        preview.filter((item: string) => item !== item);
-                      }}
-                      className="text-white h-6 w-6 bg-customGreen p-1 font-extrabold rounded-full absolute right-1 top-1 flex items-center justify-center"
+                      onClick={() => setPreview([...preview].splice(index, 1))}
+                      className="text-white cursor-pointer h-6 w-6 bg-customGreen p-1 font-extrabold rounded-full absolute right-1 top-1 flex items-center justify-center"
                     >
                       X
                     </span>
                     <Image
-                      key={index}
                       src={item}
                       width={500}
                       height={500}
@@ -312,7 +308,10 @@ const CreateListing: React.FC = () => {
                 ))}
 
                 {preview.length <= 5 && (
-                  <div className="absolute z-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center">
+                  <div
+                    onClick={() => imageRef.current.click()}
+                    className="absolute cursor-pointer backdrop-brightness-75 rounded-lg p-3 z-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center"
+                  >
                     <div className="rounded-full w-10 h-10 lg:w-16 lg:h-16 bg-[#CDCDCD66] flex justify-center items-center mb-3 lg:mb-5">
                       <Image
                         src={Imageupload}
