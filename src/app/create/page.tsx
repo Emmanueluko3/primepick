@@ -9,7 +9,6 @@ import Button from "@/components/atoms/buttons/button";
 import Imageupload from "../../components/atoms/icons/Imageupload.svg";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import Link from "next/link";
-import { convertBase64 } from "@/lib/utils";
 import Image from "next/image";
 
 const listingType = [
