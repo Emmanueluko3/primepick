@@ -32,7 +32,7 @@ const ProductView: React.FC = () => {
               <button
                 key={index}
                 onClick={() => setSelectedImage(image)}
-                className={`rounded-lg h-20 w-24 hover:border-customGreen border p-[2px] mr-3 ${
+                className={`rounded-lg lg:h-20 lg:w-24 w-12 h-12 hover:border-customGreen border p-[2px] mr-3 ${
                   selectedImage === image
                     ? "border-customGreen"
                     : "border-[#828282]"
