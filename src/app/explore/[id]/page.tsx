@@ -37,22 +37,22 @@ const Explore: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="flex justify-between w-[90%] py-10 mx-auto">
-        <div className="w-[28%]">
+      <div className="flex justify-between w-[90%] py-24 mx-auto">
+        <div className="w-[28%] hidden lg:block">
           <Category />
         </div>
-        <div className="w-[70%]">
+        <div className="lg:w-[70%] w-full">
           <ProductView />
         </div>
       </div>
       <Suggestions />
       <div className="py-10 mx-auto w-[90%]">
         <h3 className="text-4xl mb-5 font-semibold">Reviews</h3>
-        <div className="flex justify-between">
+        <div className="flex justify-between flex-col lg:flex-row w-full">
           {reviews.map((item, index) => (
             <div
               key={index}
-              className="w-[32%] flex flex-col justify-between p-3 bg-[#CDCDCD33] rounded-lg"
+              className="lg:w-[32%] border-b-2 lg:border-b-0 flex flex-col justify-between p-3 bg-[#CDCDCD33] lg:rounded-lg"
             >
               <p className="leading-[26px] text-[16px]">“{item.comment}”</p>
               <div className="flex py-3 mt-auto">

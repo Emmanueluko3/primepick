@@ -22,10 +22,12 @@ const Cart: React.FC = () => {
         )
       : 0;
 
+  console.log(reduxStore.cart.cart);
+
   return (
     <>
       <Navbar />
-      <div className="mx-auto mt-10 w-[90%]">
+      <div className="mx-auto py-24 w-[90%]">
         {" "}
         <h2 className="font-semibold text-4xl mb-7">Cart</h2>
         <div className="w-full mb-6 flex flex-col p-6 border border-[#ACACAC] rounded-lg">
@@ -71,8 +73,8 @@ const Cart: React.FC = () => {
             <h2>Please add product to cart</h2>
           )}
         </div>
-        <div className="flex justify-between items-end mb-10">
-          <form action="" className="w-[35%]">
+        <div className="flex lg:justify-between flex-col items-end mb-10">
+          <form action="" className="lg:w-[35%] w-full mb-2 lg:mb-0">
             <h4 className="font-medium text-lg mb-[5px]">Add Order Note</h4>
             <textarea
               rows={3}
@@ -80,7 +82,7 @@ const Cart: React.FC = () => {
               placeholder="Type your message here"
             />
           </form>
-          <div className="w-[40%]">
+          <div className="lg:w-[40%] w-full">
             <div className="w-full mb-2 flex justify-between items-center">
               <h4 className="text-[16px] font-medium">Total</h4>
               <h3 className="text-xl font-bold">N {totalItemsPrice}</h3>
@@ -89,12 +91,18 @@ const Cart: React.FC = () => {
               Shipping & taxes are calculated at check out
             </p>
             <div className="w-full">
-              <Link
-                href="/checkout"
-                className="rounded-full flex items-center justify-center hover:opacity-90 text-white font-medium w-full h-full py-2 px-6 bg-customGreen"
-              >
-                Check Out
-              </Link>
+              {reduxStore.cart.cart ? (
+                <Link
+                  href="/checkout"
+                  className="rounded-full flex items-center justify-center hover:opacity-90 text-white font-medium w-full h-full py-2 px-6 bg-customGreen"
+                >
+                  Check Out
+                </Link>
+              ) : (
+                <div className="rounded-full flex items-center justify-center opacity-80 text-white cursor-not-allowed font-medium w-full h-full py-2 px-6 bg-customGreen">
+                  Check Out
+                </div>
+              )}
             </div>
           </div>
         </div>

@@ -45,7 +45,7 @@ const Explore: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="flex justify-between w-[90%] py-10 mx-auto">
+      <div className="flex justify-between w-[90%] py-24 mx-auto">
         <div className="w-[28%] hidden lg:flex">
           <Category />
         </div>

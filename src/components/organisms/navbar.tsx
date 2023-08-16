@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
   const reduxStore: any = useSelector(selectCartState);
 
   return (
-    <div className="w-[90%] px-[5%] z-[1000px] fixed">
+    <div className="w-[90%] px-[5%] z-50 fixed">
       <div
         className={`${
           showLinks ? "h-screen" : ""
@@ -103,7 +103,7 @@ const Navbar: React.FC = () => {
         >
           <Link
             href="/profile"
-            className="flex lg:mr-6 my-3 lg:mb-0 font-medium hover:opacity-80 text-[16px]"
+            className="flex lg:mr-6 my-3 lg:my-0 lg:mb-0 font-medium hover:opacity-80 text-[16px]"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -122,7 +122,7 @@ const Navbar: React.FC = () => {
           </Link>
           <Link
             href="/cart"
-            className="flex my-3 relative mr-6 font-medium hover:opacity-80 text-[16px]"
+            className="flex my-3 lg:my-0  relative mr-6 font-medium hover:opacity-80 text-[16px]"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

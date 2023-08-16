@@ -223,7 +223,7 @@ const CreateListing: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="w-[90%] mx-auto py-14">
+      <div className="w-[90%] py-24 mx-auto">
         {productType === null ? (
           <h2 className="lg:text-4xl text-3xl font-semibold mb-8">
             <span className="text-customGreen italic">Choose</span> listing type

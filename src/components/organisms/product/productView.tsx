@@ -16,14 +16,14 @@ const ProductView: React.FC = () => {
 
   console.log("store is ", reduxStore?.cart?.cart);
 
-  const isProductInCart = reduxStore?.cart?.cart?.some(
-    (item: any) => item.id === product.id
-  );
+  // const isProductInCart = reduxStore?.cart?.cart?.some(
+  //   (item: any) => item.id === product.id
+  // );
 
   return (
     <>
-      <div className="w-full mb-5 flex justify-between p-6 border border-[#ACACAC] rounded-lg">
-        <div className="flex flex-col items-center w-[58%]">
+      <div className="w-full mb-5 flex justify-between flex-col lg:flex-row p-6 border border-[#ACACAC] rounded-lg">
+        <div className="flex flex-col items-center w-full lg:w-[58%]">
           <div className="py-8 px-2 h-96">
             <Image src={selectedImage} className="w-full h-full" alt="Laptop" />
           </div>
@@ -44,35 +44,39 @@ const ProductView: React.FC = () => {
           </div>
         </div>
 
-        <div className="p-4 w-[38%]">
+        <div className="p-4 w-full lg:w-[38%]">
           <div className="border-b-2 pb-5 mb-5">
-            <div className="mb-2">
+            <div className="mb-2 order-[1] lg:order-[1]">
               <span className="bg-customLightGreen text-customGreen rounded-full text-sm px-[10px] py-[6px]">
                 {product.condition}
               </span>
             </div>
-            <h4 className="font-medium text-3xl">{product.title}</h4>
-            <p className="text-[#686767] text-sm my-1">
+            <h4 className="font-medium text-3xl order-[2] lg:order-[2]">
+              {product.title}
+            </h4>
+            <p className="text-[#686767] text-sm my-1 order-[3] lg:order-[3]">
               Location: {product.location}
             </p>
-            <p className="text-customGreen text-sm font-medium mb-4">
+            <p className="text-customGreen text-sm font-medium mb-4 order-4 lg:order-[4]">
               {product.phone}
             </p>
-            <h3 className="text-xl">N {product.price}</h3>
+            <h3 className="text-xl order-[5] lg:order-[5]">
+              N {product.price}
+            </h3>
           </div>
-          <div className="w-full mb-5">
+          <div className="w-full mb-5 order-[7] lg:order-[6]">
             <p className="text-[16px]">{product.description}</p>
           </div>
-          <div className="w-full">
-            {isProductInCart ? (
+          <div className="w-full order-[6] lg:order-[7]">
+            {/* {isProductInCart ? (
               <Button onClick={() => dispatch(removeFromCart(product))}>
                 Remove
               </Button>
-            ) : (
-              <Button onClick={() => dispatch(addToCart(product))}>
-                Add to Cart
-              </Button>
-            )}
+            ) : ( */}
+            <Button onClick={() => dispatch(addToCart(product))}>
+              Add to Cart
+            </Button>
+            {/* )} */}
           </div>
         </div>
       </div>
