@@ -186,8 +186,8 @@ const FormSection: React.FC = () => {
         </>
       ) : (
         <form
-          onSubmit={async () => {
-            await handleRegister();
+          onSubmit={async (e) => {
+            await handleRegister(e);
           }}
           action=""
           className="flex w-full justify-between flex-wrap"
