@@ -20,25 +20,24 @@ const ProductCard: React.FC<ProductCardProps> = ({
   oldPrice,
 }) => {
   return (
-    <Link
-      href={`/explore/${id}`}
-      className="w-full rounded-2xl hover:bg-[#fff] hover:drop-shadow-2xl cursor-pointer"
-    >
-      <div className="h-[310px]">
-        <Image
-          src={image}
-          className="w-full h-full rounded-t-2xl"
-          alt="Laptop"
-        />
-      </div>
-      <div className="p-4">
-        <p className="text-[16px] text-[#2F2F2F]">{title}</p>
-        <h3 className="text-[16px] font-bold">N {price}</h3>
-        {oldPrice && (
-          <p className="text-sm text-gray-400 line-through">
-            N {oldPrice.toLocaleString()}
-          </p>
-        )}
+    <Link href={`/explore/${id}`}>
+      <div className="w-full h-full rounded-2xl hover:bg-[#fff] hover:drop-shadow-2xl cursor-pointer">
+        <div className="h-[310px]">
+          <Image
+            src={image}
+            className="w-full h-full rounded-t-2xl"
+            alt="Laptop"
+          />
+        </div>
+        <div className="p-4">
+          <p className="text-[16px] text-[#2F2F2F]">{title}</p>
+          <h3 className="text-[16px] font-bold">N {price}</h3>
+          {oldPrice && (
+            <p className="text-sm text-gray-400 line-through">
+              N {oldPrice.toLocaleString()}
+            </p>
+          )}
+        </div>
       </div>
     </Link>
   );

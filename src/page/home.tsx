@@ -35,7 +35,7 @@ const HomeComponent: React.FC = () => {
   return (
     <>
       <Navbar />
-      <div className="w-[90%] mx-auto">
+      <div className="w-[90%] lg:py-10 py-24 mx-auto">
         <div className="flex md:h-[100vh] mb-12 lg:mb-0 items-center flex-col lg:flex-row lg:justify-between">
           <div className="lg:w-[50%] mb-10 lg:mb-0">
             <div className="mb-2">
