@@ -29,19 +29,12 @@ export const authOptions: NextAuthOptions = {
         },
         password: { label: "Password", type: "password" },
       },
-      // async authorize(credentials) {
-      //   console.log("credentials", credentials);
-      //   const user = { id: "1", name: "Admin", email: "admin@admin.com" };
-      //   return user;
-      // },
 
       async authorize(credentials) {
         const { email, password } = credentials as {
           email: string;
           password: string;
         };
-
-        console.log("authorization");
 
         const httpLink = new HttpLink({
           uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
@@ -61,7 +54,7 @@ export const authOptions: NextAuthOptions = {
           cache: new InMemoryCache(),
         });
 
-        const {
+        let {
           data: { user },
         } = await client.query({
           query: gql`
@@ -80,17 +73,12 @@ export const authOptions: NextAuthOptions = {
           },
         });
 
-        console.log("authUser", user);
-
         if (user && (await compare(password, user.passwordHash))) {
-          return user;
+          let { passwordHash, ...userObject } = user;
+          return userObject;
         }
 
-        return null;
-
-        // const { user } = await grafbase.request(GetUserByUsername, {
-        //   username
-        // })
+        throw new Error(`Invalid Credentials`);
       },
     }),
   ],
@@ -108,5 +96,8 @@ export const authOptions: NextAuthOptions = {
 
       return token;
     },
+  },
+  pages: {
+    signIn: "/auths",
   },
 };

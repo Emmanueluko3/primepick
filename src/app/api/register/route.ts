@@ -10,7 +10,6 @@ import { hashSync, compare } from "bcrypt";
 import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
-  console.log("register hittings");
   let { userData } = await req.json();
 
   const httpLink = new HttpLink({
@@ -35,7 +34,7 @@ export async function POST(req: Request) {
 
   delete userData.password;
 
-  const registerUser = await client.mutate({
+  const { data } = await client.mutate({
     mutation: gql`
       mutation UserCreate($input: UserCreateInput!) {
         userCreate(input: $input) {
@@ -55,6 +54,6 @@ export async function POST(req: Request) {
 
   return NextResponse.json({
     status: 200,
-    data: registerUser,
+    data: data,
   });
 }

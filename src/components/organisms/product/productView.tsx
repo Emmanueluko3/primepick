@@ -3,7 +3,7 @@ import Button from "../../atoms/buttons/button";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, removeFromCart } from "../../../redux/actions/index";
 import products from "../../../store/data";
-import { selectCartState } from "@/store/cartSlice";
+import { addCartItem, selectCartState } from "@/store/cartSlice";
 import Image from "next/image";
 
 const product = products[0];
@@ -73,7 +73,13 @@ const ProductView: React.FC = () => {
                 Remove
               </Button>
             ) : ( */}
-            <Button onClick={() => dispatch(addToCart(product))}>
+            <Button
+              onClick={() =>
+                dispatch(
+                  addCartItem({ productId: "String", quantity: 2, price: 4 })
+                )
+              }
+            >
               Add to Cart
             </Button>
             {/* )} */}

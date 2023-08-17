@@ -24,7 +24,9 @@ export const cartSlice = createSlice({
       state = initialState,
       action: { payload: CartItem; type: any }
     ) {
+      console.log("item pushed to cart");
       state.cartItems.push(action.payload);
+      console.log("state: ", state.cartItems);
     },
 
     remove(state, action: { payload: CartItem; type: any }) {

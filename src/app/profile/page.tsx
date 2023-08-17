@@ -7,15 +7,22 @@ import Navbar from "../../components/organisms/navbar";
 import Footer from "../../components/organisms/footer";
 import Link from "next/link";
 import Image from "next/image";
+import { signOut, useSession } from "next-auth/react";
 
 const Profile: React.FC = () => {
   const [profileTab, setProfileTab] = useState(0);
+
+  const session = useSession();
+  const user = session.data?.session?.user;
   const tabs = [
-    "My Account",
-    "My Orders",
-    "My Listings",
-    "Account Settings",
-    "Log-out",
+    { name: "My Account", action: null },
+    { name: "My Orders", action: null },
+    { name: "My Listings", action: null },
+    { name: "Account Settings", action: null },
+    {
+      name: "Log-out",
+      action: async () => await signOut({ redirect: true }),
+    },
   ];
 
   const editIcon = (
@@ -39,36 +46,32 @@ const Profile: React.FC = () => {
       <div className="flex justify-between flex-wrap mb-5">
         <div className="flex justify-between items-center w-full mb-3">
           <h3 className="text-base font-medium">Personal Details</h3>
-          <button className="text-xl font-medium">{editIcon}</button>
+          {/* <button className="text-xl font-medium">{editIcon}</button> */}
         </div>
-        <div className="w-[48%] mb-5">
-          <input
-            type="text"
-            placeholder="Divine"
-            className="w-full rounded-lg border bg-[#F4F4F4] border-gray-600 p-3"
-          />
+        <div className="lg:w-[48%] w-full mb-5">
+          <p className="w-full overflow-y-auto no-scrollbar rounded-lg border bg-[#F4F4F4] border-gray-600 p-3">
+            {user.name}
+          </p>
         </div>
-        <div className="w-[48%] mb-5">
+        {/* <div className="w-[48%] mb-5">
           <input
             type="text"
             placeholder="Samuel"
             className="w-full rounded-lg border bg-[#F4F4F4] border-gray-600 p-3"
           />
+        </div> */}
+        <div className="lg:w-[48%] w-full mb-5">
+          <p className="w-full rounded-lg border overflow-y-auto no-scrollbar bg-[#F4F4F4] border-gray-600 p-3">
+            {user.email}
+          </p>
         </div>
-        <div className="w-[48%] mb-5">
-          <input
-            type="email"
-            placeholder="enodivinesamuel@gmail.com"
-            className="w-full rounded-lg border bg-[#F4F4F4] border-gray-600 p-3"
-          />
-        </div>
-        <div className="w-[48%] mb-5">
+        {/* <div className="w-[48%] mb-5">
           <input
             type="text"
             placeholder="08131210163"
             className="w-full rounded-lg border bg-[#F4F4F4] border-gray-600 p-3"
           />
-        </div>
+        </div> */}
       </div>
       <div className="flex justify-between flex-wrap">
         <div className="flex justify-between items-center w-full mb-3">
@@ -162,6 +165,13 @@ const Profile: React.FC = () => {
     </div>
   );
 
+  const handleClick = (item: any, index: number) => {
+    item.action
+      ? item.action()
+      : () => {
+          setProfileTab(index);
+        };
+  };
   return (
     <>
       <Navbar />
@@ -170,13 +180,13 @@ const Profile: React.FC = () => {
           <ul>
             {tabs.map((item, index) => (
               <li
-                onClick={() => setProfileTab(index)}
+                onClick={() => handleClick(item, index)}
                 className={`my-3 text-base cursor-pointer ${
                   profileTab === index ? "font-medium text-customGreen" : ""
                 }`}
                 key={index}
               >
-                {item}
+                {item.name}
               </li>
             ))}
           </ul>

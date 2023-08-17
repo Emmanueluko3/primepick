@@ -5,10 +5,15 @@ import Logo from "../../assets/Logo.svg";
 import FormSection from "./formSection";
 import Avatar from "../../components/atoms/icons/Avatar.svg";
 import Image from "next/image";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/lib/auth";
+import { useSession } from "next-auth/react";
 
 const Auths: React.FC = () => {
   const reviews = [Avatar, Avatar, Avatar, Avatar];
 
+  const { data: session } = useSession();
+  console.log(session);
   return (
     <div className="flex justify-between items-center">
       <FormSection />

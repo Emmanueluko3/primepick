@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 
 import React, { useState } from "react";
 import AuthButton from "../../components/atoms/buttons/authButton";
@@ -10,8 +10,9 @@ import { useAppContext } from "../../context/auth";
 import Button from "../../components/atoms/buttons/button";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import Link from "next/link";
-import { getCsrfToken, signIn } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { getCsrfToken, signIn, signOut } from "next-auth/react";
+import { redirect, useRouter } from "next/navigation";
+import { toast } from "react-hot-toast";
 
 const FormSection: React.FC = () => {
   const [isRegistered, setIsRegistered] = useState(true);
@@ -20,35 +21,38 @@ const FormSection: React.FC = () => {
   const [fullName, setFullName] = useState("");
   const [location, setLocation] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
+    await signOut({ redirect: false });
     const credentials = {
       email,
       password,
       redirect: false,
       csrfToken: await getCsrfToken(),
-
-      // passwrd: password,
-      // location: location,
-      // {email: "admin@email.com"}
     };
 
     console.log(`Credentials`, credentials);
 
     let signInResponse = await signIn("credentials", credentials);
 
-    if (!signInResponse?.error) {
+    if (signInResponse?.error) {
+      toast.error(signInResponse.error);
       console.error("login failed", signInResponse);
+
+      return;
     }
 
     console.log("signin response", signInResponse);
     setRegistered(true);
-    redirect("/profile");
+
+    router.push("/profile");
   };
 
   const handleRegister = async (e: any) => {
     e.preventDefault();
+    await signOut({ redirect: false });
 
     const userData = {
       email: email,
@@ -73,7 +77,7 @@ const FormSection: React.FC = () => {
     });
 
     setRegistered(true);
-    redirect("/profile");
+    router.push("/profile");
   };
 
   return (
