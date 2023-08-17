@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import Button from "../../atoms/buttons/button";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, removeFromCart } from "../../../redux/actions/index";
 import products from "../../../store/data";
-import { addCartItem, selectCartState } from "@/store/cartSlice";
+import { addCartItem, empty, remove, selectCartState } from "@/store/cartSlice";
 import Image from "next/image";
 
 const product = products[0];
@@ -14,11 +13,11 @@ const ProductView: React.FC = () => {
   const dispatch = useDispatch();
   const reduxStore: any = useSelector(selectCartState);
 
-  console.log("store is ", reduxStore?.cart?.cart);
+  console.log("product store is: ", reduxStore.cart.cartItems);
 
-  // const isProductInCart = reduxStore?.cart?.cart?.some(
-  //   (item: any) => item.id === product.id
-  // );
+  const isProductInCart = reduxStore?.cart?.cartItems?.some(
+    (item: any) => item.id === product.id
+  );
 
   return (
     <>
@@ -68,22 +67,15 @@ const ProductView: React.FC = () => {
             <p className="text-[16px]">{product.description}</p>
           </div>
           <div className="w-full order-[6] lg:order-[7]">
-            {/* {isProductInCart ? (
-              <Button onClick={() => dispatch(removeFromCart(product))}>
-                Remove
+            {isProductInCart ? (
+              <Button onClick={() => dispatch(remove(product))}>Remove</Button>
+            ) : (
+              <Button onClick={() => dispatch(addCartItem(product))}>
+                Add to Cart
               </Button>
-            ) : ( */}
-            <Button
-              onClick={() =>
-                dispatch(
-                  addCartItem({ productId: "String", quantity: 2, price: 4 })
-                )
-              }
-            >
-              Add to Cart
-            </Button>
-            {/* )} */}
+            )}
           </div>
+          <button onClick={() => dispatch(empty({}))}>clear</button>
         </div>
       </div>
       <div className="w-full flex flex-col p-6 border border-[#ACACAC] rounded-lg">

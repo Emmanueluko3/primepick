@@ -6,23 +6,23 @@ import Navbar from "../../components/organisms/navbar";
 import Footer from "../../components/organisms/footer";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart } from "../../redux/actions";
-// import { Link } from "react-router-dom";
 import Link from "next/link";
 import { selectCartState } from "@/store/cartSlice";
+import Image from "next/image";
 
 const Cart: React.FC = () => {
   const dispatch = useDispatch();
   const reduxStore: any = useSelector(selectCartState);
 
+  console.log("product store is: ", reduxStore.cart.cartItems);
+
   const totalItemsPrice: any =
     reduxStore! == null
-      ? Object.values(reduxStore.cart).reduce(
+      ? Object.values(reduxStore.cart.cartItems).reduce(
           (total, item: any) => total + item.price,
           0
         )
       : 0;
-
-  console.log(reduxStore.cart.cart);
 
   return (
     <>
@@ -31,8 +31,8 @@ const Cart: React.FC = () => {
         {" "}
         <h2 className="font-semibold text-4xl mb-7">Cart</h2>
         <div className="w-full mb-6 flex flex-col p-6 border border-[#ACACAC] rounded-lg">
-          {reduxStore.cart.cart ? (
-            Object.values(reduxStore.cart.cart).map(
+          {reduxStore?.cart?.cartItems ? (
+            Object.values(reduxStore?.cart?.cartItems).map(
               (item: any, index: number) => (
                 <div
                   key={index}
@@ -44,7 +44,9 @@ const Cart: React.FC = () => {
                       className="rounded-lg h-4 w-4 required:bg-customGreen checked:bg-customGreen"
                     />
                     <div className="rounded-lg h-24 w-32  mx-4 border p-3 border-[#828282]">
-                      <img
+                      <Image
+                        width={500}
+                        height={500}
                         src={item.imageUrls[0]}
                         className="w-full h-full"
                         alt="Laptop"
@@ -53,7 +55,6 @@ const Cart: React.FC = () => {
                     <div className="flex flex-col justify-between">
                       <h4 className="text-lg">{item.title}</h4>
                       <p className="text-[#686767]">{item.location}</p>
-                      {/* <h3 className="text-xl font-medium">N {item.price}</h3> */}
                     </div>
                   </div>
 
@@ -91,7 +92,7 @@ const Cart: React.FC = () => {
               Shipping & taxes are calculated at check out
             </p>
             <div className="w-full">
-              {reduxStore.cart.cart ? (
+              {reduxStore.cart.cartItems ? (
                 <Link
                   href="/checkout"
                   className="rounded-full flex items-center justify-center hover:opacity-90 text-white font-medium w-full h-full py-2 px-6 bg-customGreen"

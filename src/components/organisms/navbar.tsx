@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { useSelector } from "react-redux";
-import { selectCartState, addCartItem } from "@/store/cartSlice";
+import { selectCartState } from "@/store/cartSlice";
 
 const Navbar: React.FC = () => {
   const [showLinks, setShowLinks] = useState(false);
@@ -137,12 +137,13 @@ const Navbar: React.FC = () => {
                 fill="#050505"
               />
             </svg>
-            {reduxStore?.cart?.cart &&
-              Object?.keys(reduxStore.cart.cart).length !== 0 && (
-                <span className="h-4 w-4 flex items-center justify-center bg-customGreen text-white absolute -right-3 -top-2 rounded-full text-[12px]">
-                  {Object?.keys(reduxStore.cart.cart).length}
-                </span>
-              )}
+            {reduxStore?.cart?.cartItems.length !== 0 ? (
+              <span className="h-5 w-5 flex items-center justify-center bg-customGreen text-white absolute -right-3 -top-2 rounded-full text-[12px]">
+                {reduxStore?.cart?.cartItems.length}
+              </span>
+            ) : (
+              ""
+            )}
             Cart
           </Link>
           <Link

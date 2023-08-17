@@ -4,9 +4,12 @@ import Lgtv from "../../../assets/Lgtv.svg";
 import Navbar from "../../../components/organisms/navbar";
 import Footer from "../../../components/organisms/footer";
 import Button from "../../../components/atoms/buttons/button";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
+import { useSelector } from "react-redux";
+import { selectCartState } from "@/store/cartSlice";
 
 const Checkout: React.FC = () => {
-  const [quantity, setQuantity] = useState(1);
   const [deliveryType, setDeliveryType] = useState("Express Delivery");
   const [dropdown, setDropdown] = useState(false);
 
@@ -65,44 +68,34 @@ const Checkout: React.FC = () => {
       </defs>
     </svg>
   );
+
+  const { data: userSession }: any = useSession();
+  const user = userSession?.session?.user;
+
+  const reduxStore: any = useSelector(selectCartState);
+
+  console.log("product store is: ", reduxStore.cart.cartItems);
+
   return (
     <>
       <Navbar />
-      <div className="mx-auto my-10 w-[90%]">
-        {" "}
+      <div className="mx-auto py-24 w-[90%]">
         <h2 className="font-semibold text-4xl mb-7">Check Out</h2>
-        <div className="flex justify-between">
-          <div className="w-[50%]">
+        <div className="flex flex-col lg:flex-row justify-between">
+          <div className="lg:w-[50%] mb-5 lg:mb-0 w-full">
             <form action="" className="w-full">
               <h2 className="font-medium text-xl mb-5">Personal Details</h2>
               <div className="w-full flex justify-between items-center flex-wrap mb-2">
-                <div className="mb-5 w-[48%]">
-                  <input
-                    type="text"
-                    className="p-3 w-full rounded-lg border border-gray-500"
-                    placeholder="First name"
-                  />
+                <div className="mb-5 w-full lg:w-[48%]">
+                  <p className="p-3 w-full whitespace-nowrap overflow-x-auto no-scrollbar rounded-lg border border-gray-500">
+                    {user?.name}
+                  </p>
                 </div>
-                <div className="mb-5 w-[48%]">
-                  <input
-                    type="text"
-                    className="p-3 w-full rounded-lg border border-gray-500"
-                    placeholder="Last name"
-                  />
-                </div>
-                <div className="mb-5 w-[48%]">
-                  <input
-                    type="email"
-                    className="p-3 w-full rounded-lg border border-gray-500"
-                    placeholder="Email"
-                  />
-                </div>
-                <div className="mb-5 w-[48%]">
-                  <input
-                    type="tel"
-                    className="p-3 w-full rounded-lg border border-gray-500"
-                    placeholder="Phone number"
-                  />
+
+                <div className="mb-5 w-full lg:w-[48%]">
+                  <p className="p-3 w-full whitespace-nowrap overflow-x-auto no-scrollbar rounded-lg border border-gray-500">
+                    {user?.email}
+                  </p>
                 </div>
               </div>
 
@@ -138,7 +131,7 @@ const Checkout: React.FC = () => {
                 </div>
               </div>
               <h2 className="font-medium text-xl mb-5">Delivery Type</h2>
-              <div className="flex justify-between items-center mb-2">
+              <div className="flex justify-between flex-col lg:flex-row items-center mb-2">
                 {productDeliverytype.map((item, index) => (
                   <div
                     onClick={() => setDeliveryType(item.type)}
@@ -147,7 +140,7 @@ const Checkout: React.FC = () => {
                       deliveryType === item.type
                         ? "border-[#553623] border-2"
                         : ""
-                    } w-[48%] cursor-pointer border hover:border-[#553623] hover:border-2 border-[#686767] rounded-lg p-3 mb-5 flex`}
+                    } lg:w-[48%] w-full cursor-pointer border hover:border-[#553623] hover:border-2 border-[#686767] rounded-lg p-3 mb-5 flex`}
                   >
                     {deliveryType === item.type ? (
                       <>
@@ -238,67 +231,29 @@ const Checkout: React.FC = () => {
             </form>
           </div>
 
-          <div className="w-[35%]">
+          <div className="lg:w-[35%] w-full">
             <h2 className="font-medium text-xl mb-5">Cart</h2>
             <div className="w-full mb-4 flex flex-col p-3 border border-[#ACACAC] rounded-lg">
               <div className="flex justify-between items-center border-b-[0.7px] mb-5 pb-5 border-[#CDCDCD]">
                 <div className="flex justify-between items-center">
-                  <div className="rounded-lg h-20 w-24  mr-2 border p-3 border-[#828282]">
-                    <img src={Lgtv} className="w-full h-full" alt="Laptop" />
+                  <div className="rounded-lg lg:h-20 lg:w-24 w-20 h-16  mr-2 border p-3 border-[#828282]">
+                    <Image
+                      width={500}
+                      height={500}
+                      src={Lgtv}
+                      className="w-full h-full"
+                      alt="Laptop"
+                    />
                   </div>
                   <div className="flex flex-col py-1 justify-between">
-                    <h4 className="text-sm">Samsung All New 43 I...</h4>
-                    <p className="text-[#686767]">Lagos</p>
-                    <h3 className="text-[16px] font-semibold">N 98,000</h3>
+                    <h4 className="text-xs lg:text-sm">
+                      Samsung All New 43 I...
+                    </h4>
+                    <p className="text-[#686767] lg:text-sm text-xs">Lagos</p>
                   </div>
                 </div>
 
-                <div className="flex flex-col justify-between items-end">
-                  <h3 className="font-semibold text-[16px] mb-4">N196,000</h3>
-                  <div className="flex items-center">
-                    <button
-                      onClick={() =>
-                        setQuantity((item) => (item === 0 ? item : item - 1))
-                      }
-                      className="h-8 w-8 flex justify-center items-center  bg-[#D2D1D1] rounded-[4px]"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        className="font-bold text-lg"
-                      >
-                        <path
-                          d="M3.99609 13H20.0001C20.2653 13 20.5197 12.8946 20.7072 12.7071C20.8947 12.5196 21.0001 12.2652 21.0001 12C21.0001 11.7348 20.8947 11.4804 20.7072 11.2929C20.5197 11.1054 20.2653 11 20.0001 11H3.99609C3.73088 11 3.47652 11.1054 3.28899 11.2929C3.10145 11.4804 2.99609 11.7348 2.99609 12C2.99609 12.2652 3.10145 12.5196 3.28899 12.7071C3.47652 12.8946 3.73088 13 3.99609 13Z"
-                          fill="#1C1B1B"
-                        />
-                      </svg>
-                    </button>
-                    <span className="px-4">{quantity}</span>
-                    <button
-                      onClick={() => {
-                        setQuantity((item) => item + 1);
-                      }}
-                      className="h-8 w-8 flex justify-center items-center bg-[#D2D1D1] rounded-[4px]"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="14"
-                        height="14"
-                        viewBox="0 0 14 14"
-                        fill="none"
-                        className="font-bold text-lg"
-                      >
-                        <path
-                          d="M13 8H8V13C8 13.55 7.55 14 7 14C6.45 14 6 13.55 6 13V8H1C0.45 8 0 7.55 0 7C0 6.45 0.45 6 1 6H6V1C6 0.45 6.45 0 7 0C7.55 0 8 0.45 8 1V6H13C13.55 6 14 6.45 14 7C14 7.55 13.55 8 13 8Z"
-                          fill="#1C1B1B"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                </div>
+                <h3 className="font-semibold text-sm lg:text-base">N196,000</h3>
               </div>
             </div>
             <div className="w-full mb-2 flex justify-between items-center">

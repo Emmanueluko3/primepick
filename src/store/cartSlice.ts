@@ -3,9 +3,16 @@ import { AppState } from "./store";
 import { HYDRATE } from "next-redux-wrapper";
 
 export interface CartItem {
-  productId: String;
-  quantity: number;
+  id: number;
+  imageUrls: string[];
+  title: string;
+  category: string;
+  condition: string;
   price: number;
+  location: string;
+  phone: string;
+  description: string;
+  specification: string[];
 }
 
 export interface Cart {
@@ -24,14 +31,12 @@ export const cartSlice = createSlice({
       state = initialState,
       action: { payload: CartItem; type: any }
     ) {
-      console.log("item pushed to cart");
       state.cartItems.push(action.payload);
-      console.log("state: ", state.cartItems);
     },
 
     remove(state, action: { payload: CartItem; type: any }) {
       state.cartItems = state.cartItems.filter(
-        (item) => item.productId !== action.payload.productId
+        (item) => item.id !== action.payload.id
       );
     },
 

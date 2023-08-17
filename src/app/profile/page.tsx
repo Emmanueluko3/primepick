@@ -18,7 +18,7 @@ const Profile: React.FC = () => {
     { name: "My Account", action: null },
     { name: "My Orders", action: null },
     { name: "My Listings", action: null },
-    { name: "Account Settings", action: null },
+    // { name: "Account Settings", action: null },
     {
       name: "Log-out",
       action: async () => await signOut({ redirect: true }),
@@ -41,7 +41,7 @@ const Profile: React.FC = () => {
   );
 
   const account = (
-    <div className="rounded-lg border w-[69%] border-[#ACACAC] p-5">
+    <div className="rounded-lg border w-full lg:w-[69%] border-[#ACACAC] p-5">
       <h2 className="text-2xl font-medium mb-5">Account Overview</h2>
       <div className="flex justify-between flex-wrap mb-5">
         <div className="flex justify-between items-center w-full mb-3">
@@ -111,7 +111,7 @@ const Profile: React.FC = () => {
   );
 
   const orders = (
-    <div className="rounded-lg border w-[69%] border-[#ACACAC] p-5">
+    <div className="rounded-lg border w-full lg:w-[69%] border-[#ACACAC] p-5">
       <h2 className="text-2xl font-medium mb-5">My Orders</h2>
 
       <div className="flex items-center justify-center flex-col mb-8">
@@ -132,7 +132,7 @@ const Profile: React.FC = () => {
   );
 
   const listing = (
-    <div className="rounded-lg border w-[69%] border-[#ACACAC] p-5">
+    <div className="rounded-lg border w-full lg:w-[69%] border-[#ACACAC] p-5">
       <h2 className="text-2xl font-medium mb-5">My Listings</h2>
 
       <div className="flex items-center justify-center flex-col mb-8">
@@ -166,22 +166,20 @@ const Profile: React.FC = () => {
   );
 
   const handleClick = (item: any, index: number) => {
-    item.action
-      ? item.action()
-      : () => {
-          setProfileTab(index);
-        };
+    item.action ? item.action() : setProfileTab(index);
   };
   return (
     <>
       <Navbar />
-      <div className="flex justify-between mx-auto w-[90%] py-16">
-        <div className="rounded-lg h-full border w-[28%] border-[#ACACAC] p-5">
-          <ul>
+      <div className="flex justify-between flex-col lg:flex-row mx-auto w-[90%] py-24">
+        <div className="rounded-lg mb-5 lg:mb-0 h-full border lg:w-[28%] w-full border-[#ACACAC] p-5">
+          <ul className="flex overflow-x-auto no-scrollbar flex-row lg:flex-col">
             {tabs.map((item, index) => (
               <li
                 onClick={() => handleClick(item, index)}
-                className={`my-3 text-base cursor-pointer ${
+                className={`my-3 ${
+                  index === 3 ? "font-semibold" : ""
+                } mx-3 lg:mx-0 text-base w-full hover:text-customGreen whitespace-nowrap cursor-pointer ${
                   profileTab === index ? "font-medium text-customGreen" : ""
                 }`}
                 key={index}
