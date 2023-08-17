@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
   const navLinks = [
     { label: "Explore", href: "/explore" },
     { label: "About us", href: "/about" },
-    { label: "Support", href: "/support" },
+    // { label: "Support", href: "/support" },
   ];
 
   const reduxStore: any = useSelector(selectCartState);

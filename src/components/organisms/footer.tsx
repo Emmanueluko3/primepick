@@ -10,13 +10,13 @@ const Footer: React.FC = () => {
   const navLinks = [
     { label: "Explore", href: "/" },
     { label: "About us", href: "/about" },
-    { label: "Support", href: "/support" },
+    // { label: "Support", href: "/support" },
   ];
   return (
     <div className="text-white bg-[#2F2F2F] flex-col py-14 flex justify-between lg:items-center">
       <div className="lg:w-auto mx-auto mb-7 w-[90%]">
         <Link href="/" className="font-semibold text-2xl ">
-          PrimePicks
+          PrimePick
         </Link>
       </div>
 

@@ -10,6 +10,7 @@ import Imageupload from "../../components/atoms/icons/Imageupload.svg";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import Link from "next/link";
 import Image from "next/image";
+import { toast } from "react-hot-toast";
 
 const listingType = [
   {
@@ -188,25 +189,54 @@ const CreateListing: React.FC = () => {
   };
 
   const submitProduct = async () => {
-    let input = itemListingDetails;
+    if (preview.length <= 0) {
+      toast.error("Please add image of product");
+    }
+    if (productTitle === "") {
+      toast.error("Please input a product title");
+    }
+    if (productCategory === "") {
+      toast.error("please select a product category");
+    }
+    if (productCondition === "") {
+      toast.error("please select a product condition");
+    }
+    if (productLocation === "") {
+      toast.error("please input a product location");
+    }
+    if (phoneNumber === "") {
+      toast.error("please input a phone number");
+    }
+    if (productPrice === "") {
+      toast.error("please input a product price");
+    }
 
-    // let specifications = itemListingDetails.specifications;
-    // delete input.specifications;
-    // const input = {
+    if (productCategory === "") {
+      toast.error("Kindly add a description");
+    }
+    if (productCategory === "") {
+      toast.error("please list out specifications of your product");
+    } else {
+      let input = itemListingDetails;
 
-    //   specifications: {
-    //     create: {
-    //       text: itemListingDetails,
-    //     },
-    //   },
-    // };
-    const mutation = await addProduct({
-      variables: {
-        input,
-      },
-    });
+      // let specifications = itemListingDetails.specifications;
+      // delete input.specifications;
+      // const input = {
 
-    console.log("mutation", mutation);
+      //   specifications: {
+      //     create: {
+      //       text: itemListingDetails,
+      //     },
+      //   },
+      // };
+      const mutation = await addProduct({
+        variables: {
+          input,
+        },
+      });
+
+      console.log("mutation", mutation);
+    }
   };
 
   const handleImage = async (event: any): Promise<void> => {
@@ -711,7 +741,13 @@ const CreateListing: React.FC = () => {
             </div>
 
             <div className="w-[40%] lg:w-[25%]">
-              <Button onClick={() => setProductType(selectedType)}>
+              <Button
+                onClick={() => {
+                  selectedType === null
+                    ? toast.error("Please select a listing type")
+                    : setProductType(selectedType);
+                }}
+              >
                 Continue
               </Button>
             </div>

@@ -7,8 +7,7 @@ import { ApolloProviderWrapper } from "@/apollo/ApolloWrapper";
 // import { Provider } from "react-redux";
 import { wrapper } from "../store/store";
 import { PersistGate } from "redux-persist/integration/react";
-import Navbar from "@/components/organisms/navbar";
-import Footer from "@/components/organisms/footer";
+import { Toaster } from "react-hot-toast";
 // import { useStore } from "react-redux";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -31,7 +30,10 @@ export default function RootLayout({
         {/* <PersistGate persistor={store.__persistor} loading={<div>Loading</div>}> */}
         <AppWrapper>
           <ApolloProviderWrapper>
-            <body className={inter.className}>{children}</body>
+            <body className={inter.className}>
+              <Toaster position="top-right" reverseOrder={true} />
+              {children}
+            </body>
           </ApolloProviderWrapper>
         </AppWrapper>
         {/* </PersistGate> */}
