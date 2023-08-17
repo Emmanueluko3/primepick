@@ -12,8 +12,8 @@ import { signOut, useSession } from "next-auth/react";
 const Profile: React.FC = () => {
   const [profileTab, setProfileTab] = useState(0);
 
-  const session = useSession();
-  const user = session.data?.session?.user;
+  const { data: userSession }: any = useSession();
+  const user = userSession?.session?.user;
   const tabs = [
     { name: "My Account", action: null },
     { name: "My Orders", action: null },
@@ -50,7 +50,7 @@ const Profile: React.FC = () => {
         </div>
         <div className="lg:w-[48%] w-full mb-5">
           <p className="w-full overflow-y-auto no-scrollbar rounded-lg border bg-[#F4F4F4] border-gray-600 p-3">
-            {user.name}
+            {user?.name}
           </p>
         </div>
         {/* <div className="w-[48%] mb-5">
@@ -62,7 +62,7 @@ const Profile: React.FC = () => {
         </div> */}
         <div className="lg:w-[48%] w-full mb-5">
           <p className="w-full rounded-lg border overflow-y-auto no-scrollbar bg-[#F4F4F4] border-gray-600 p-3">
-            {user.email}
+            {user?.email}
           </p>
         </div>
         {/* <div className="w-[48%] mb-5">
