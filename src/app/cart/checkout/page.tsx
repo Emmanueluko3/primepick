@@ -74,7 +74,12 @@ const Checkout: React.FC = () => {
 
   const reduxStore: any = useSelector(selectCartState);
 
-  console.log("product store is: ", reduxStore.cart.cartItems);
+  const totalItemsPrice: any = reduxStore?.cart?.cartItems.reduce(
+    (total: any, item: any) => total + item.price,
+    0
+  );
+
+  const itemInCart = reduxStore?.cart?.cartItems.length > 0;
 
   return (
     <>
@@ -225,40 +230,57 @@ const Checkout: React.FC = () => {
                   />
                 </div>
               </div>
-              <div className="w-full">
-                <Button>Place Order</Button>
-              </div>
+              {itemInCart && (
+                <div className="w-full">
+                  <Button>Place Order</Button>
+                </div>
+              )}
             </form>
           </div>
 
           <div className="lg:w-[35%] w-full">
             <h2 className="font-medium text-xl mb-5">Cart</h2>
             <div className="w-full mb-4 flex flex-col p-3 border border-[#ACACAC] rounded-lg">
-              <div className="flex justify-between items-center border-b-[0.7px] mb-5 pb-5 border-[#CDCDCD]">
-                <div className="flex justify-between items-center">
-                  <div className="rounded-lg lg:h-20 lg:w-24 w-20 h-16  mr-2 border p-3 border-[#828282]">
-                    <Image
-                      width={500}
-                      height={500}
-                      src={Lgtv}
-                      className="w-full h-full"
-                      alt="Laptop"
-                    />
-                  </div>
-                  <div className="flex flex-col py-1 justify-between">
-                    <h4 className="text-xs lg:text-sm">
-                      Samsung All New 43 I...
-                    </h4>
-                    <p className="text-[#686767] lg:text-sm text-xs">Lagos</p>
-                  </div>
-                </div>
+              {itemInCart ? (
+                Object.values(reduxStore?.cart?.cartItems).map(
+                  (item: any, index) => (
+                    <div
+                      key={index}
+                      className="flex justify-between items-center border-b-[0.7px] mb-5 pb-5 border-[#CDCDCD]"
+                    >
+                      <div className="flex justify-between items-center">
+                        <div className="rounded-lg lg:h-20 lg:w-24 w-20 h-16  mr-2 border p-3 border-[#828282]">
+                          <Image
+                            width={500}
+                            height={500}
+                            src={item.imageUrls[0]}
+                            className="w-full h-full"
+                            alt="Laptop"
+                          />
+                        </div>
+                        <div className="flex flex-col py-1 justify-between">
+                          <h4 className="text-xs lg:text-sm">{item.title}</h4>
+                          <p className="text-[#686767] lg:text-sm text-xs">
+                            {item.location}
+                          </p>
+                        </div>
+                      </div>
 
-                <h3 className="font-semibold text-sm lg:text-base">N196,000</h3>
-              </div>
+                      <h3 className="font-semibold text-sm lg:text-base">
+                        N {item.price}
+                      </h3>
+                    </div>
+                  )
+                )
+              ) : (
+                <h2 className="text-gray-500 text-base">
+                  Please add product to cart
+                </h2>
+              )}
             </div>
             <div className="w-full mb-2 flex justify-between items-center">
               <h4 className="text-[16px] font-medium">Total</h4>
-              <h3 className="text-xl font-bold">N392,000</h3>
+              <h3 className="text-xl font-bold"> N {totalItemsPrice}</h3>
             </div>
           </div>
         </div>

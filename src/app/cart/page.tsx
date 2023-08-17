@@ -7,22 +7,19 @@ import Footer from "../../components/organisms/footer";
 import { useDispatch, useSelector } from "react-redux";
 import { removeFromCart } from "../../redux/actions";
 import Link from "next/link";
-import { selectCartState } from "@/store/cartSlice";
+import { remove, selectCartState } from "@/store/cartSlice";
 import Image from "next/image";
 
 const Cart: React.FC = () => {
   const dispatch = useDispatch();
   const reduxStore: any = useSelector(selectCartState);
 
-  console.log("product store is: ", reduxStore.cart.cartItems);
+  const totalItemsPrice: any = reduxStore?.cart?.cartItems.reduce(
+    (total: any, item: any) => total + item.price,
+    0
+  );
 
-  const totalItemsPrice: any =
-    reduxStore! == null
-      ? Object.values(reduxStore.cart.cartItems).reduce(
-          (total, item: any) => total + item.price,
-          0
-        )
-      : 0;
+  const itemInCart = reduxStore?.cart?.cartItems.length > 0;
 
   return (
     <>
@@ -31,7 +28,7 @@ const Cart: React.FC = () => {
         {" "}
         <h2 className="font-semibold text-4xl mb-7">Cart</h2>
         <div className="w-full mb-6 flex flex-col p-6 border border-[#ACACAC] rounded-lg">
-          {reduxStore?.cart?.cartItems ? (
+          {itemInCart ? (
             Object.values(reduxStore?.cart?.cartItems).map(
               (item: any, index: number) => (
                 <div
@@ -47,7 +44,7 @@ const Cart: React.FC = () => {
                       <Image
                         width={500}
                         height={500}
-                        src={item.imageUrls[0]}
+                        src={item?.imageUrls[0]}
                         className="w-full h-full"
                         alt="Laptop"
                       />
@@ -60,18 +57,20 @@ const Cart: React.FC = () => {
 
                   <div className="flex flex-col justify-between items-end">
                     <button
-                      onClick={() => dispatch(removeFromCart(item))}
+                      onClick={() => dispatch(remove(item))}
                       className="text-[#A82424] text-sm border border-[#A82424] rounded-full hover:text-white hover:bg-[#A82424] px-5 py-1 mb-5"
                     >
                       Remove
                     </button>
-                    <h3 className="text-xl font-medium">N {item.price}</h3>
+                    <h3 className="text-xl font-medium">N {item?.price}</h3>
                   </div>
                 </div>
               )
             )
           ) : (
-            <h2>Please add product to cart</h2>
+            <h2 className="text-gray-500 text-base">
+              Please add product to cart
+            </h2>
           )}
         </div>
         <div className="flex lg:justify-between flex-col items-end mb-10">
@@ -92,9 +91,9 @@ const Cart: React.FC = () => {
               Shipping & taxes are calculated at check out
             </p>
             <div className="w-full">
-              {reduxStore.cart.cartItems ? (
+              {itemInCart ? (
                 <Link
-                  href="/checkout"
+                  href="/cart/checkout"
                   className="rounded-full flex items-center justify-center hover:opacity-90 text-white font-medium w-full h-full py-2 px-6 bg-customGreen"
                 >
                   Check Out
