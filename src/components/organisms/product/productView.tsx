@@ -24,7 +24,13 @@ const ProductView: React.FC = () => {
       <div className="w-full mb-5 flex justify-between flex-col lg:flex-row p-6 border border-[#ACACAC] rounded-lg">
         <div className="flex flex-col items-center w-full lg:w-[58%]">
           <div className="py-8 px-2 h-96">
-            <Image src={selectedImage} className="w-full h-full" alt="Laptop" />
+            <Image
+              src={selectedImage}
+              width={500}
+              height={500}
+              className="w-full h-full"
+              alt="Laptop"
+            />
           </div>
           <div className="w-full flex">
             {product.imageUrls.map((image, index) => (

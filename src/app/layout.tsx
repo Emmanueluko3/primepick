@@ -5,6 +5,7 @@ import { Inter } from "next/font/google";
 // import { Provider } from "react-redux";
 import { wrapper } from "../store/store";
 import { Toaster } from "react-hot-toast";
+// import HomeSpinner from "@/components/atoms/homeSpinner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Providers>
+          {/* <HomeSpinner /> */}
           <Toaster position="top-right" reverseOrder={true} />
           {children}
         </Providers>
