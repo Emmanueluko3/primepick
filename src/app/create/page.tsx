@@ -12,7 +12,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { toast } from "react-hot-toast";
 import axios from "axios";
-import { url } from "inspector";
+// import { url } from "inspector";
 import LoadingSpinner from "@/components/atoms/loadingSpinner";
 import { isOnline } from "@/lib/checkOnlineStatus";
 
@@ -812,7 +812,7 @@ const CreateListing: React.FC = () => {
                     submitProduct();
                   }}
                 >
-                  Continue
+                  Create
                 </Button>
               </div>
             </div>

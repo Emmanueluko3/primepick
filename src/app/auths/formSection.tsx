@@ -22,6 +22,7 @@ const FormSection: React.FC = () => {
   const [termsChecked, setTermsChecked] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(false);
   const [passwordVisible, setPasswordVisible] = useState<boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
   const { status } = useSession();
@@ -47,36 +48,43 @@ const FormSection: React.FC = () => {
     if (password === "") {
       return toast.error("please enter your password");
     } else {
-      await signOut({ redirect: false });
-      const credentials = {
-        email,
-        password,
-        redirect: false,
-        csrfToken: await getCsrfToken(),
-      };
+      try {
+        setLoading(true);
+        await signOut({ redirect: false });
+        const credentials = {
+          email,
+          password,
+          redirect: false,
+          csrfToken: await getCsrfToken(),
+        };
 
-      console.log(`Credentials`, credentials);
+        console.log(`Credentials`, credentials);
 
-      let signInResponse = await signIn("credentials", credentials);
+        let signInResponse = await signIn("credentials", credentials);
 
-      if (signInResponse?.error) {
-        toast.error(signInResponse.error);
-        console.error("login failed", signInResponse);
+        if (signInResponse?.error) {
+          toast.error(signInResponse.error);
+          console.error("login failed", signInResponse);
 
-        return;
+          return;
+        }
+
+        console.log("signin response", signInResponse);
+        setRegistered(true);
+
+        router.push("/profile");
+
+        rememberMe
+          ? localStorage.setItem(
+              "userCredentials",
+              JSON.stringify({ email, password })
+            )
+          : localStorage.removeItem("userCredentials");
+      } catch (error) {
+        console.error("An error occurred during login:", error);
+      } finally {
+        setLoading(false);
       }
-
-      console.log("signin response", signInResponse);
-      setRegistered(true);
-
-      router.push("/profile");
-
-      rememberMe
-        ? localStorage.setItem(
-            "userCredentials",
-            JSON.stringify({ email, password })
-          )
-        : localStorage.removeItem("userCredentials");
     }
   };
 
@@ -105,32 +113,40 @@ const FormSection: React.FC = () => {
     if (!termsChecked) {
       toast.error("You must agree to the terms and conditions to proceed.");
     } else {
-      await signOut({ redirect: false });
+      try {
+        setLoading(true);
+        await signOut({ redirect: false });
 
-      const userData = {
-        email: email,
-        name: fullName,
-        password: password,
-        location: location,
-      };
+        const userData = {
+          email: email,
+          name: fullName,
+          password: password,
+          location: location,
+        };
 
-      const registeredUser = await (
-        await fetch("api/register", {
-          method: "POST",
-          body: JSON.stringify({ userData: userData }),
-        })
-      ).json();
+        const registeredUser = await (
+          await fetch("api/register", {
+            method: "POST",
+            body: JSON.stringify({ userData: userData }),
+          })
+        ).json();
 
-      console.log("registeredUser", registeredUser);
+        console.log("registeredUser", registeredUser);
 
-      let signInResponse = await signIn("credentials", {
-        email,
-        password,
-        redirect: false,
-      });
+        let signInResponse = await signIn("credentials", {
+          email,
+          password,
+          redirect: false,
+        });
 
-      setRegistered(true);
-      router.push("/profile");
+        setRegistered(true);
+        router.push("/profile");
+      } catch (error: any) {
+        console.error("An error occurred during registration:", error);
+        toast.error("An error occurred during registration.");
+      } finally {
+        setLoading(false);
+      }
     }
   };
 
@@ -158,7 +174,7 @@ const FormSection: React.FC = () => {
 
   return (
     <div className="lg:p-12 p-8 relative h-screen w-full flex items-start justify-center flex-col">
-      {status === "loading" && <LoadingSpinner />}
+      {status === "loading" || (isLoading && <LoadingSpinner />)}
       <Link
         href="/"
         className="py-3 px-5 hover:text-white bg-customLightGreen rounded-full flex justify-center items-center mb-6 text-customGreen font-semibold hover:bg-customGreen"
