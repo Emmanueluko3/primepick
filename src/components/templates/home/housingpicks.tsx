@@ -4,6 +4,7 @@ import House1 from "../../../assets/House1.svg";
 import House2 from "../../../assets/House2.svg";
 import House3 from "../../../assets/House3.svg";
 import House4 from "../../../assets/House4.svg";
+import { allProducts } from "@/store/data";
 
 const HousingPicks: React.FC = () => {
   const trendingItems = [
@@ -28,6 +29,10 @@ const HousingPicks: React.FC = () => {
       price: 160000,
     },
   ];
+
+  const productsData = allProducts();
+
+  console.log("products are: ", productsData);
 
   return (
     <div className="w-full">

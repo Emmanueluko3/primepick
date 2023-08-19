@@ -1,3 +1,4 @@
+import { gql, useQuery } from "@apollo/client";
 import Lgtv from "../assets/Lgtv.svg";
 import Lgtv2 from "../assets/Lgtv2.svg";
 import Lgtv3 from "../assets/Lgtv3.svg";
@@ -15,6 +16,30 @@ export interface Product {
   phone: string;
   description: string;
   specification: string[];
+}
+
+export function allProducts() {
+  const {
+    loading: categoryLoading,
+    error: categoryError,
+    data: productCategories,
+  } = useQuery(gql`
+    query ProductCategoryCollection {
+      productCategoryCollection(last: 100) {
+        edges {
+          node {
+            name
+            id
+          }
+        }
+        pageInfo {
+          hasPreviousPage
+          hasNextPage
+        }
+      }
+    }
+  `);
+  return productCategories;
 }
 
 const products: Product[] = [

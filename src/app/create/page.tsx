@@ -11,6 +11,10 @@ import { gql, useMutation, useQuery } from "@apollo/client";
 import Link from "next/link";
 import Image from "next/image";
 import { toast } from "react-hot-toast";
+import axios from "axios";
+import { url } from "inspector";
+import LoadingSpinner from "@/components/atoms/loadingSpinner";
+import { isOnline } from "@/lib/checkOnlineStatus";
 
 const listingType = [
   {
@@ -62,8 +66,7 @@ const CreateListing: React.FC = () => {
   const [productType, setProductType] = useState<number | null>(null);
 
   const imageRef = useRef<any>(null);
-  const [preview, setPreview] = useState<any>([]);
-  const [imageUrl, setImageUrl] = useState("");
+  const [imageUrl, setImageUrl] = useState<any>([]);
   const [productTitle, setProductTitle] = useState("");
   const [productCategory, setProductCategory] = useState("");
   const [productCondition, setProductCondition] = useState("");
@@ -79,6 +82,9 @@ const CreateListing: React.FC = () => {
   const [homeType, setHomeType] = useState("");
   const [bedroom, setBedroom] = useState("");
   const [bathroom, setBathroom] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onlineStatus = isOnline();
 
   const {
     loading: categoryLoading,
@@ -142,6 +148,7 @@ const CreateListing: React.FC = () => {
   };
 
   const itemListingDetails = {
+    imageUrl: imageUrl,
     name: productTitle,
     category: {
       link: productCategory,
@@ -189,66 +196,147 @@ const CreateListing: React.FC = () => {
   };
 
   const submitProduct = async () => {
-    if (preview.length <= 0) {
-      toast.error("Please add image of product");
-    }
-    if (productTitle === "") {
-      toast.error("Please input a product title");
-    }
-    if (productCategory === "") {
-      toast.error("please select a product category");
-    }
-    if (productCondition === "") {
-      toast.error("please select a product condition");
-    }
-    if (productLocation === "") {
-      toast.error("please input a product location");
-    }
-    if (phoneNumber === "") {
-      toast.error("please input a phone number");
-    }
-    if (productPrice === "") {
-      toast.error("please input a product price");
-    }
+    if (onlineStatus) {
+      if (imageUrl.length <= 0) {
+        toast.error("Please add image of product");
+      }
+      if (productTitle === "") {
+        toast.error("Please input a product title");
+      }
+      if (productCategory === "") {
+        toast.error("please select a product category");
+      }
+      if (productCondition === "") {
+        toast.error("please select a product condition");
+      }
+      if (productLocation === "") {
+        toast.error("please input a product location");
+      }
+      if (phoneNumber === "") {
+        toast.error("please input a phone number");
+      }
+      if (productPrice === "") {
+        toast.error("please input a product price");
+      }
 
-    if (productCategory === "") {
-      toast.error("Kindly add a description");
-    }
-    if (productCategory === "") {
-      toast.error("please list out specifications of your product");
-    } else {
-      let input = itemListingDetails;
+      if (productCategory === "") {
+        toast.error("Kindly add a description");
+      }
+      if (productCategory === "") {
+        toast.error("please list out specifications of your product");
+      } else {
+        let input = itemListingDetails;
 
-      // let specifications = itemListingDetails.specifications;
-      // delete input.specifications;
-      // const input = {
+        // let specifications = itemListingDetails.specifications;
+        // delete input.specifications;
+        // const input = {
 
-      //   specifications: {
-      //     create: {
-      //       text: itemListingDetails,
-      //     },
-      //   },
-      // };
-      const mutation = await addProduct({
-        variables: {
-          input,
-        },
-      });
+        //   specifications: {
+        //     create: {
+        //       text: itemListingDetails,
+        //     },
+        //   },
+        // };
+        const mutation = await addProduct({
+          variables: {
+            input,
+          },
+        });
 
-      console.log("mutation", mutation);
-    }
+        console.log("mutation", mutation);
+      }
+    } else toast.error("Please connect device to the internet");
   };
 
-  const handleImage = async (event: any): Promise<void> => {
-    const reader = new FileReader();
-    reader.onload = () => {
-      setPreview([...preview, reader.result]);
-    };
+  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_NAME;
+  const preset: any = process.env.NEXT_PUBLIC_CLOUDINARY_PRESET_KEY;
+  const apiKey: any = process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY;
+  const apiSecret: any = process.env.NEXT_PUBLIC_CLOUDINARY_SECRET;
 
-    reader.readAsDataURL(event.target.files[0]);
+  const url: any = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
+
+  const handleImage = async (e: any) => {
+    if (onlineStatus) {
+      const file = e.target.files[0];
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", preset);
+
+      try {
+        setIsLoading(true);
+        const response = await axios.post(url, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        });
+
+        const imageDetails: any = {
+          src: response.data.secure_url,
+          id: response.data.public_id,
+        };
+
+        setImageUrl([...imageUrl, imageDetails]);
+
+        const updatedImageArray = [...imageUrl, imageDetails];
+
+        localStorage.setItem("imageUrl", JSON.stringify(updatedImageArray));
+      } catch (error) {
+        toast.error("Image upload failled, Please try again");
+        console.error("Error uploading image:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    } else toast.error("Please connect device to the internet");
   };
 
-  console.log("Image is ", preview);
+  const handleDelete = async (publicId: string) => {
+    if (onlineStatus) {
+      try {
+        const response = await axios.post(
+          `https://api.cloudinary.com/v1_1/${cloudName}/delete_by_token`,
+          null,
+          {
+            params: {
+              api_key: apiKey,
+              api_secret: apiSecret,
+              public_id: publicId,
+            },
+          }
+        );
+
+        if (response.status === 200) {
+          toast.success("Image deleted successfully");
+          console.log("delete is: ", response.status);
+          // update delete
+          const updatedDelete = imageUrl.filter(
+            (item: any) => item.id !== item.id
+          );
+          setImageUrl(updatedDelete);
+          localStorage.setItem("imageUrl", JSON.stringify(updatedDelete));
+        } else {
+          toast.error("Failed to delete image from cloud");
+        }
+      } catch (error) {
+        console.error("Error deleting image:", error);
+        toast.error("Error deleting image from cloud");
+        // update delete
+        const updatedDelete = imageUrl.filter(
+          (item: any) => item.id !== publicId
+        );
+        setImageUrl(updatedDelete);
+        localStorage.setItem("imageUrl", JSON.stringify(updatedDelete));
+      }
+    } else toast.error("Please connect device to the internet");
+  };
+
+  useEffect(() => {
+    const storedImageDetails: any = localStorage.getItem("imageUrl");
+    if (storedImageDetails) {
+      const parsedDetails = JSON.parse(storedImageDetails);
+
+      setImageUrl(parsedDetails);
+    }
+  }, []);
 
   return (
     <>
@@ -287,7 +375,6 @@ const CreateListing: React.FC = () => {
               <div
                 onClick={() => {
                   setSelectedType(index);
-                  console.log("index", index);
                 }}
                 key={index}
                 className={`lg:w-[30%] ${
@@ -315,19 +402,19 @@ const CreateListing: React.FC = () => {
               className="mx-auto mb-16 lg:w-[70%] border border-[#ACACAC] rounded-lg p-5"
             >
               <div className="border relative border-[#ACACAC] h-40 lg:h-80 w-full rounded-md flex flex-wrap mb-5 z-0">
-                {preview.map((item: string, index: number) => (
+                {imageUrl.map((item: any, index: number) => (
                   <div
                     key={index}
                     className="border-2 z-10 relative rounded-lg border-customGreen p-1 w-[28%] h-[40%] m-2"
                   >
                     <span
-                      onClick={() => setPreview([...preview].splice(index, 1))}
+                      onClick={() => handleDelete(item.id)}
                       className="text-white cursor-pointer h-6 w-6 bg-customGreen p-1 font-extrabold rounded-full absolute right-1 top-1 flex items-center justify-center"
                     >
                       X
                     </span>
                     <Image
-                      src={item}
+                      src={item.src}
                       width={500}
                       height={500}
                       className="w-full h-full rounded-lg"
@@ -336,32 +423,35 @@ const CreateListing: React.FC = () => {
                   </div>
                 ))}
 
-                {preview.length <= 5 && (
-                  <div
-                    onClick={() => imageRef.current.click()}
-                    className="absolute cursor-pointer backdrop-brightness-75 rounded-lg p-3 z-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center"
-                  >
-                    <div className="rounded-full w-10 h-10 lg:w-16 lg:h-16 bg-[#CDCDCD66] flex justify-center items-center mb-3 lg:mb-5">
-                      <Image
-                        src={Imageupload}
-                        className="w-8 h-6 lg:h-10 lg:w-10"
-                        alt=""
+                {imageUrl?.length <= 5 &&
+                  (isLoading ? (
+                    <LoadingSpinner />
+                  ) : (
+                    <div
+                      onClick={() => imageRef.current.click()}
+                      className="absolute cursor-pointer lg:backdrop-brightness-75 rounded-lg p-3 z-20 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center h-16 lg:h-auto justify-center"
+                    >
+                      <div className="rounded-full w-7 h-7 lg:w-16 lg:h-16 bg-[#CDCDCD66] flex justify-center items-center mb-3 lg:mb-5">
+                        <Image
+                          src={Imageupload}
+                          className="w-8 h-6 lg:h-10 lg:w-10"
+                          alt=""
+                        />
+                      </div>
+                      <h3 className="font-semibold hidden lg:block lg:text-2xl text-xl mb-1 lg:mb-[6px]">
+                        Add Photos
+                      </h3>
+                      <p className="lg:text-base text-xs text-center">
+                        You can add up to six photos
+                      </p>
+                      <input
+                        onChange={handleImage}
+                        type="file"
+                        ref={imageRef}
+                        className="hidden"
                       />
                     </div>
-                    <h3 className="font-semibold lg:text-2xl text-xl mb-1 lg:mb-[6px]">
-                      Add Photos
-                    </h3>
-                    <p className="lg:text-base text-sm">
-                      You can add up to six photos
-                    </p>
-                    <input
-                      onChange={handleImage}
-                      type="file"
-                      ref={imageRef}
-                      className="hidden"
-                    />
-                  </div>
-                )}
+                  ))}
               </div>
 
               <div className="mb-5 w-full">

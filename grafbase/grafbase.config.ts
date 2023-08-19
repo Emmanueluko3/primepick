@@ -75,13 +75,21 @@ const specification = g.model("Specification", {
     .optional(),
 });
 
+const imageUrl = g.model("ImageUrl", {
+  url: g.string(),
+  product: g.relation(() => product).optional(),
+});
 const product = g
   .model("Product", {
     name: g.string(),
     slug: g.string().unique(),
     description: g.string().optional(),
     phone: g.string().optional(),
-    imageUrl: g.string().optional(),
+    imageUrl: g
+      .relation(() => imageUrl)
+      .optional()
+      .list()
+      .optional(),
     location: g.string(),
     price: g.decimal().optional(),
     currency: g.string().optional(),

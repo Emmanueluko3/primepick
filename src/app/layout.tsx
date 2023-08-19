@@ -1,13 +1,13 @@
 import { Providers } from "@/providers/provider";
 import "./globals.css";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Roboto } from "next/font/google";
 // import { Provider } from "react-redux";
 import { wrapper } from "../store/store";
 import { Toaster } from "react-hot-toast";
 // import HomeSpinner from "@/components/atoms/homeSpinner";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ weight: "400", subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "PrimePick",
