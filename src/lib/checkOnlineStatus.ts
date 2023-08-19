@@ -1,3 +1,7 @@
 export const isOnline = () => {
-  return navigator.onLine;
+  if (typeof window !== "undefined" && "navigator" in window) {
+    return navigator.onLine;
+  } else {
+    return true;
+  }
 };
