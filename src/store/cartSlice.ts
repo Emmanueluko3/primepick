@@ -3,7 +3,7 @@ import { AppState } from "./store";
 import { HYDRATE } from "next-redux-wrapper";
 
 export interface CartItem {
-  id: number;
+  id: string;
   imageUrls: string[];
   title: string;
   category: string;
@@ -29,15 +29,19 @@ export const cartSlice = createSlice({
   reducers: {
     addCartItem(
       state = initialState,
-      action: { payload: CartItem; type: any }
+      action: { payload: CartItem | undefined; type: any }
     ) {
-      state.cartItems.push(action.payload);
+      if (action.payload) {
+        state.cartItems.push(action.payload);
+      }
     },
 
-    remove(state, action: { payload: CartItem; type: any }) {
-      state.cartItems = state.cartItems.filter(
-        (item) => item.id !== action.payload.id
-      );
+    remove(state, action: { payload: CartItem | undefined; type: any }) {
+      if (action.payload) {
+        state.cartItems = state.cartItems.filter(
+          (item) => item.id !== action.payload!.id
+        );
+      }
     },
 
     empty(state, action) {

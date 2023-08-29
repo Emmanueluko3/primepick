@@ -11,6 +11,8 @@ import {
 import { HttpLink } from "@apollo/client";
 // import { useAuth } from '@clerk/nextjs'
 import { setContext } from "@apollo/client/link/context";
+import { getToken } from "next-auth/jwt";
+import { getServerSession } from "next-auth";
 
 export const ApolloProviderWrapper = ({ children }: PropsWithChildren) => {
   //   const { getToken } = useAuth()
@@ -21,9 +23,10 @@ export const ApolloProviderWrapper = ({ children }: PropsWithChildren) => {
 
   const client = useMemo(() => {
     const authMiddleware = setContext(async (operation, { headers }) => {
-      // const token = await getToken({ template: 'grafbase' })
+      // const token = await getToken({req: await getServerSession(authOptions)})
       let response = await (await fetch("api/auth/session")).json();
 
+      console.log("auth_roken", response);
       let token = response.user.access_token;
 
       return {

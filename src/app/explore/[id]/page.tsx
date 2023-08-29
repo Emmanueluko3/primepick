@@ -1,11 +1,14 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import Navbar from "../../../components/organisms/navbar";
 import Footer from "../../../components/organisms/footer";
 import Category from "../../../components/organisms/category";
 import ProductView from "../../../components/organisms/product/productView";
 import Suggestions from "../../../components/organisms/product/suggestedPicks";
+import Loading from "../loading";
+import { usePathname } from "next/navigation";
+import products, { Product } from "@/store/data";
 
 const reviews = [
   {
@@ -31,7 +34,18 @@ const reviews = [
   },
 ];
 const Explore: React.FC = () => {
+  const id = usePathname().split("/")[2];
+
+  const [product, setProduct] = useState<any>();
+
+  const fetchProduct = async (id: any) => {
+    const selectedProduct = await products?.find((p) => p.id === id);
+    setProduct(selectedProduct);
+    // setSelectedImage(selectedProduct?.imageUrls[0] || "");
+  };
+
   useEffect(() => {
+    fetchProduct(id);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
   return (
@@ -41,9 +55,17 @@ const Explore: React.FC = () => {
         <div className="w-[28%] hidden lg:block">
           <Category />
         </div>
-        <div className="lg:w-[70%] w-full">
-          <ProductView />
-        </div>
+        <Suspense
+          fallback={
+            <div className="lg:w-[70%] w-full">
+              <Loading />
+            </div>
+          }
+        >
+          <div className="lg:w-[70%] w-full">
+            <ProductView product={product} />
+          </div>
+        </Suspense>
       </div>
       <Suggestions />
       <div className="py-10 mx-auto w-[90%]">

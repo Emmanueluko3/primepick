@@ -120,6 +120,13 @@ const CreateListing: React.FC = () => {
   const productCategoryList =
     productCategories?.productCategoryCollection?.edges ?? [];
 
+  console.log(
+    "productCategoryList is: ",
+    productCategoryList,
+    categoryLoading,
+    categoryError
+  );
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [productType]);
@@ -593,7 +600,7 @@ const CreateListing: React.FC = () => {
                           >
                             Select
                           </option>
-                          {productCategoryList.map((item: any, index: any) => (
+                          {productCategoryList?.map((item: any, index: any) => (
                             <option key={index} value={item.node.id}>
                               {item.node.name}
                             </option>

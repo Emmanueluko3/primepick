@@ -1,22 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../../atoms/buttons/button";
 import { useDispatch, useSelector } from "react-redux";
-import products from "../../../store/data";
-import { addCartItem, empty, remove, selectCartState } from "@/store/cartSlice";
+import products, { Product } from "../../../store/data";
+import { addCartItem, remove, selectCartState } from "@/store/cartSlice";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
-const product = products[0];
+interface productProps {
+  product: Product;
+}
 
-const ProductView: React.FC = () => {
-  const [selectedImage, setSelectedImage] = useState(product.imageUrls[0]);
+const ProductView: React.FC<productProps> = ({ product }) => {
+  const [selectedImage, setSelectedImage] = useState("");
+
+  useEffect(() => {
+    setSelectedImage(product?.imageUrls[0]);
+  }, [product]);
 
   const dispatch = useDispatch();
   const reduxStore: any = useSelector(selectCartState);
 
-  console.log("product store is: ", reduxStore.cart.cartItems);
-
   const isProductInCart = reduxStore?.cart?.cartItems?.some(
-    (item: any) => item.id === product.id
+    (item: any) => item.id === product?.id
   );
 
   return (
@@ -33,7 +38,7 @@ const ProductView: React.FC = () => {
             />
           </div>
           <div className="w-full flex">
-            {product.imageUrls.map((image, index) => (
+            {product?.imageUrls?.map((image: string, index: number) => (
               <button
                 key={index}
                 onClick={() => setSelectedImage(image)}
@@ -53,41 +58,45 @@ const ProductView: React.FC = () => {
           <div className="border-b-2 pb-5 mb-5">
             <div className="mb-2 order-[1] lg:order-[1]">
               <span className="bg-customLightGreen text-customGreen rounded-full text-sm px-[10px] py-[6px]">
-                {product.condition}
+                {product?.condition}
               </span>
             </div>
             <h4 className="font-medium text-3xl order-[2] lg:order-[2]">
-              {product.title}
+              {product?.title}
             </h4>
             <p className="text-[#686767] text-sm my-1 order-[3] lg:order-[3]">
-              Location: {product.location}
+              Location: {product?.location}
             </p>
             <p className="text-customGreen text-sm font-medium mb-4 order-4 lg:order-[4]">
-              {product.phone}
+              {product?.phone}
             </p>
             <h3 className="text-xl order-[5] lg:order-[5]">
-              N {product.price}
+              N {product?.price}
             </h3>
           </div>
           <div className="w-full mb-5 order-[7] lg:order-[6]">
-            <p className="text-[16px]">{product.description}</p>
+            <p className="text-[16px]">{product?.description}</p>
           </div>
           <div className="w-full order-[6] lg:order-[7]">
             {isProductInCart ? (
-              <Button onClick={() => dispatch(remove(product))}>Remove</Button>
+              <button
+                className="rounded-full flex items-center justify-center hover:opacity-90 text-white font-medium w-full h-full border-gray-300 py-2 px-6 bg-red-600"
+                onClick={() => dispatch(remove(product))}
+              >
+                Remove
+              </button>
             ) : (
               <Button onClick={() => dispatch(addCartItem(product))}>
                 Add to Cart
               </Button>
             )}
           </div>
-          <button onClick={() => dispatch(empty({}))}>clear</button>
         </div>
       </div>
       <div className="w-full flex flex-col p-6 border border-[#ACACAC] rounded-lg">
         <h2 className="text-lg font-medium">Specifications</h2>
         <ul className="p-4 mx-3 list-disc">
-          {product.specification.map((item, index) => (
+          {product?.specification?.map((item: string, index: number) => (
             <li className="text-gray-600 my-1" key={index}>
               {item}
             </li>

@@ -115,6 +115,7 @@ export default config({
     providers: [authProvider],
     rules: (rules) => {
       // rules.public().read();
+      // rules.private();
     },
   },
 });

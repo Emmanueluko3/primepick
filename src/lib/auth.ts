@@ -12,10 +12,20 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { compare } from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
+  },
+  jwt: {
+    // async encode({ secret, token }) {
+    //   console.log("encode", token);
+    //   return jwt.sign(token, secret);
+    // },
+    // async decode({ secret, token }) {
+    //   return jwt.verify(token, secret);
+    // },
   },
   secret: process.env.JWT_SECRET,
   providers: [
@@ -84,14 +94,28 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async session({ session, token, user }) {
-      session.user = token;
-
-      return session;
+      // session.user = token;
+      // return session;
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+          randomKey: token.randomKey,
+        },
+      };
     },
 
     async jwt({ token, user }) {
+      console.log(token, token);
       if (user) {
-        token.user = user;
+        // token.user = user;
+        const u = user as unknown as any;
+        return {
+          ...token,
+          id: u.id,
+          randomKey: u.randomKey,
+        };
       }
 
       return token;

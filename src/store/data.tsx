@@ -6,7 +6,7 @@ import Lgtv4 from "../assets/Lgtv4.svg";
 import Lgtv5 from "../assets/Lgtv5.svg";
 
 export interface Product {
-  id: number;
+  id: string;
   imageUrls: string[];
   title: string;
   category: string;
@@ -44,7 +44,7 @@ export interface Product {
 
 const products: Product[] = [
   {
-    id: 0,
+    id: "0",
     imageUrls: [Lgtv, Lgtv2, Lgtv3, Lgtv4, Lgtv5],
     title: "LG Tv",
     category: "Electronics",
@@ -64,7 +64,27 @@ const products: Product[] = [
     ],
   },
   {
-    id: 1,
+    id: "1",
+    imageUrls: [Lgtv3, Lgtv4, Lgtv5],
+    title: "LB Tv",
+    category: "Electronics",
+    condition: "New",
+    price: 20000,
+    location: "Lagos",
+    phone: "+2347041982590",
+    description: "Description of Product 1 and just some random text",
+    specification: [
+      "SKU: SA948EA29N628NAFAMZ",
+      "Product Line: Kaylas Mart Electronics",
+      " Model: Samsung 5300",
+      "Size (L x W x H cm): 1145.0 x 659.0 x 136.0‎",
+      "Weight (kg): 11",
+      "Color: Black",
+      "Main Material: N/A",
+    ],
+  },
+  {
+    id: "2",
     imageUrls: [Lgtv, Lgtv2, Lgtv3, Lgtv4, Lgtv5],
     title: "LG Tv",
     category: "Electronics",
@@ -84,7 +104,7 @@ const products: Product[] = [
     ],
   },
   {
-    id: 2,
+    id: "3",
     imageUrls: [Lgtv, Lgtv2, Lgtv3, Lgtv4, Lgtv5],
     title: "LG Tv",
     category: "Electronics",
@@ -104,27 +124,7 @@ const products: Product[] = [
     ],
   },
   {
-    id: 3,
-    imageUrls: [Lgtv, Lgtv2, Lgtv3, Lgtv4, Lgtv5],
-    title: "LG Tv",
-    category: "Electronics",
-    condition: "New",
-    price: 20000,
-    location: "Lagos",
-    phone: "+2347041982590",
-    description: "Description of Product 1 and just some random text",
-    specification: [
-      "SKU: SA948EA29N628NAFAMZ",
-      "Product Line: Kaylas Mart Electronics",
-      " Model: Samsung 5300",
-      "Size (L x W x H cm): 1145.0 x 659.0 x 136.0‎",
-      "Weight (kg): 11",
-      "Color: Black",
-      "Main Material: N/A",
-    ],
-  },
-  {
-    id: 4,
+    id: "4",
     imageUrls: [Lgtv, Lgtv2, Lgtv3, Lgtv4, Lgtv5],
     title: "LG Tv",
     category: "Electronics",
