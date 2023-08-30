@@ -18,10 +18,8 @@ export const ApolloProviderWrapper = ({ children }: PropsWithChildren) => {
 
   const client = useMemo(() => {
     const authMiddleware = setContext(async (operation, { headers }) => {
-      // const token = await getToken({req: await getServerSession(authOptions)})
       let response = await (await fetch("api/auth/session")).json();
 
-      console.log("auth_roken", response.sessionToken);
       let token = response.sessionToken;
 
       return {
