@@ -267,7 +267,7 @@ const Checkout: React.FC = () => {
                       </div>
 
                       <h3 className="font-semibold text-sm lg:text-base">
-                        N {item.price}
+                        &#8358; {item.price}
                       </h3>
                     </div>
                   )
@@ -280,7 +280,7 @@ const Checkout: React.FC = () => {
             </div>
             <div className="w-full mb-2 flex justify-between items-center">
               <h4 className="text-[16px] font-medium">Total</h4>
-              <h3 className="text-xl font-bold"> N {totalItemsPrice}</h3>
+              <h3 className="text-xl font-bold">&#8358; {totalItemsPrice}</h3>
             </div>
           </div>
         </div>

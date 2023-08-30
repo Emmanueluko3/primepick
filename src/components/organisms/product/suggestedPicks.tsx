@@ -1,44 +1,21 @@
+"use client";
+
 import React from "react";
-
-import Studiomic from "../../../assets/Studiomic.svg";
-import Lgtv2 from "../../../assets/Lgtv2.svg";
-import Studiomic2 from "../../../assets/Studiomic2.svg";
-import Generator from "../../../assets/Generator.svg";
 import ProductCard from "../../molecules/Cards/productCard";
+import products from "@/store/data";
 
-const suggestedPicks = [
-  {
-    image: Studiomic,
-    title: "Studio Condenser Microphone",
-    price: "N 40,000",
-  },
-  {
-    image: Lgtv2,
-    title: "Samsung 43″ FHD Smart TV",
-    price: "N 98,000",
-  },
-  {
-    image: Studiomic2,
-    title: "USB Condenser Microphone",
-    price: "N 27,570",
-  },
-  {
-    image: Generator,
-    title: "Haier Thermocool Generator",
-    price: "N 163,900",
-  },
-];
+const suggestedPicks = products.sort(() => Math.random() - 0.5);
 
 const Suggestions: React.FC = () => {
   return (
     <div className="py-10 mx-auto w-[90%]">
       <h3 className="lg:text-4xl text-3xl mb-5">You may Also Like</h3>
-      <div className="flex justify-between flex-wrap">
-        {suggestedPicks.map((item, index) => (
-          <div key={index} className="lg:w-[23.5%] w-[48%] mb-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-5">
+        {suggestedPicks.slice(0, 4).map((item, index) => (
+          <div key={index} className="w-full">
             <ProductCard
-              id={index}
-              image={item.image}
+              id={item.id}
+              image={item.imageUrls[0]}
               title={item.title}
               price={item.price}
               oldPrice={null}

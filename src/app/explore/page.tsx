@@ -7,7 +7,7 @@ import Category from "../../components/organisms/category";
 import ProductCard from "../../components/molecules/Cards/productCard";
 import Suggestions from "../../components/organisms/product/suggestedPicks";
 import products from "../../store/data";
-// import { useParams } from "react-router-dom";
+import { useEventContext } from "@/context/events";
 
 const reviews = [
   {
@@ -33,11 +33,11 @@ const reviews = [
   },
 ];
 const Explore: React.FC = () => {
-  const [preview, setPreview] = useState(true);
-  // const { id }: any = useParams<{ id: string }>();
-  // const product = products.find((product) => product.id === parseInt(id));
+  const { productCategory } = useEventContext();
 
-  // console.log(product);
+  const selectedProducts = products.filter((product) =>
+    productCategory === "All" ? product : product.category === productCategory
+  );
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
@@ -52,19 +52,27 @@ const Explore: React.FC = () => {
         <div className="lg:w-[70%]">
           <div className=".w-full">
             <h2 className="text-2xl font-semibold mb-3">Television & Video</h2>
-            <div className="w-full flex justify-between flex-wrap">
-              {products.map((item, index) => (
-                <div key={index} className="lg:w-[32%] w-[48%] mb-6">
-                  <ProductCard
-                    id={item.id}
-                    image={item.imageUrls[0]}
-                    title={item.title}
-                    price={item.price}
-                    oldPrice={null}
-                  />
-                </div>
-              ))}
-            </div>
+            {selectedProducts.length <= 0 ? (
+              <h3 className="text-gray-500 mt-10">
+                No product in{" "}
+                <span className="font-semibold">({productCategory})</span> yet,
+                Please create new listing under this category
+              </h3>
+            ) : (
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 lg:gap-5">
+                {selectedProducts.map((item, index) => (
+                  <div key={index} className="w-full">
+                    <ProductCard
+                      id={item.id}
+                      image={item.imageUrls[0]}
+                      title={item.title}
+                      price={item.price}
+                      oldPrice={null}
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>

@@ -1,11 +1,11 @@
 "use client";
 
 import React, { Suspense, useEffect, useState } from "react";
-import Navbar from "../../../components/organisms/navbar";
-import Footer from "../../../components/organisms/footer";
-import Category from "../../../components/organisms/category";
-import ProductView from "../../../components/organisms/product/productView";
-import Suggestions from "../../../components/organisms/product/suggestedPicks";
+import Navbar from "@/components/organisms/navbar";
+import Footer from "@/components/organisms/footer";
+import Category from "@/components/organisms/category";
+import ProductView from "@/components/organisms/product/productView";
+import Suggestions from "@/components/organisms/product/suggestedPicks";
 import Loading from "../loading";
 import { usePathname } from "next/navigation";
 import products, { Product } from "@/store/data";
@@ -41,7 +41,6 @@ const Explore: React.FC = () => {
   const fetchProduct = async (id: any) => {
     const selectedProduct = await products?.find((p) => p.id === id);
     setProduct(selectedProduct);
-    // setSelectedImage(selectedProduct?.imageUrls[0] || "");
   };
 
   useEffect(() => {
