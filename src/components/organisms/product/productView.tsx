@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Button from "../../atoms/buttons/button";
 import { useDispatch, useSelector } from "react-redux";
-import products, { Product } from "../../../store/data";
+import { Product } from "../../../store/data";
 import { addCartItem, remove, selectCartState } from "@/store/cartSlice";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
 
 interface productProps {
   product: Product;
@@ -33,7 +32,7 @@ const ProductView: React.FC<productProps> = ({ product }) => {
               src={selectedImage}
               width={500}
               height={500}
-              className="w-full h-full"
+              className="w-full h-full rounded-lg"
               alt="Laptop"
             />
           </div>
@@ -48,7 +47,11 @@ const ProductView: React.FC<productProps> = ({ product }) => {
                     : "border-[#828282]"
                 }`}
               >
-                <Image src={image} className="w-full h-full" alt="Laptop" />
+                <Image
+                  src={image}
+                  className="w-full h-full rounded-lg"
+                  alt="Laptop"
+                />
               </button>
             ))}
           </div>
@@ -71,7 +74,7 @@ const ProductView: React.FC<productProps> = ({ product }) => {
               {product?.phone}
             </p>
             <h3 className="text-xl order-[5] lg:order-[5]">
-              N {product?.price}
+              &#8358; {product?.price}
             </h3>
           </div>
           <div className="w-full mb-5 order-[7] lg:order-[6]">

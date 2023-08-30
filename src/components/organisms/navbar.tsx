@@ -16,7 +16,7 @@ const Navbar: React.FC = () => {
   const reduxStore: any = useSelector(selectCartState);
 
   return (
-    <div className="w-[90%] px-[5%] z-50 fixed">
+    <div className="w-[90%] px-[5%] z-50 fixed bg-white">
       <div
         className={`${
           showLinks ? "h-screen" : ""

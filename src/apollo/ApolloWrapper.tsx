@@ -9,16 +9,11 @@ import {
   from,
 } from "@apollo/client";
 import { HttpLink } from "@apollo/client";
-// import { useAuth } from '@clerk/nextjs'
 import { setContext } from "@apollo/client/link/context";
-import { getToken } from "next-auth/jwt";
-import { getServerSession } from "next-auth";
 
 export const ApolloProviderWrapper = ({ children }: PropsWithChildren) => {
-  //   const { getToken } = useAuth()
-
   const httpLink = new HttpLink({
-    uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
+    uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
   });
 
   const client = useMemo(() => {
@@ -26,13 +21,13 @@ export const ApolloProviderWrapper = ({ children }: PropsWithChildren) => {
       // const token = await getToken({req: await getServerSession(authOptions)})
       let response = await (await fetch("api/auth/session")).json();
 
-      console.log("auth_roken", response);
-      let token = response.user.access_token;
+      console.log("auth_roken", response.sessionToken);
+      let token = response.sessionToken;
 
       return {
         headers: {
           ...headers,
-          "x-api-key": process.env.REACT_APP_API_KEY,
+          "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
           authorization: `Bearer ${token}`,
         },
       };

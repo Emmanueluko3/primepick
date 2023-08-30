@@ -62,7 +62,9 @@ const Cart: React.FC = () => {
                     >
                       Remove
                     </button>
-                    <h3 className="text-xl font-medium">N {item?.price}</h3>
+                    <h3 className="text-xl font-medium">
+                      &#8358; {item?.price}
+                    </h3>
                   </div>
                 </div>
               )
@@ -73,7 +75,7 @@ const Cart: React.FC = () => {
             </h2>
           )}
         </div>
-        <div className="flex lg:justify-between flex-col items-end mb-10">
+        <div className="flex lg:justify-between flex-col lg:flex-row items-end mb-10">
           <form action="" className="lg:w-[35%] w-full mb-2 lg:mb-0">
             <h4 className="font-medium text-lg mb-[5px]">Add Order Note</h4>
             <textarea
@@ -85,7 +87,7 @@ const Cart: React.FC = () => {
           <div className="lg:w-[40%] w-full">
             <div className="w-full mb-2 flex justify-between items-center">
               <h4 className="text-[16px] font-medium">Total</h4>
-              <h3 className="text-xl font-bold">N {totalItemsPrice}</h3>
+              <h3 className="text-xl font-bold">&#8358; {totalItemsPrice}</h3>
             </div>
             <p className="mb-1 text-[#686767]">
               Shipping & taxes are calculated at check out
