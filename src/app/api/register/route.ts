@@ -13,14 +13,14 @@ export async function POST(req: Request) {
   let { userData } = await req.json();
 
   const httpLink = new HttpLink({
-    uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
+    uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
   });
 
   const authMiddleware = setContext(async (operation, { headers }) => {
     return {
       headers: {
         ...headers,
-        "x-api-key": process.env.REACT_APP_API_KEY,
+        "x-api-key": process.env.NEXT_PUBLIC_API_KEY,
       },
     };
   });
