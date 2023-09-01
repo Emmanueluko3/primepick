@@ -266,7 +266,7 @@ const Checkout: React.FC = () => {
                         </div>
                       </div>
 
-                      <h3 className="font-semibold text-sm lg:text-base">
+                      <h3 className="font-semibold lg:block hidden text-sm lg:text-base">
                         &#8358; {item.price}
                       </h3>
                     </div>

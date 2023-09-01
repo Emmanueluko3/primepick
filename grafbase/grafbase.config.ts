@@ -79,10 +79,11 @@ const imageUrl = g.model("ImageUrl", {
   url: g.string(),
   product: g.relation(() => product).optional(),
 });
+
+// slug: g.string().unique(),
 const product = g
   .model("Product", {
     name: g.string(),
-    slug: g.string().unique(),
     description: g.string().optional(),
     phone: g.string().optional(),
     imageUrl: g
