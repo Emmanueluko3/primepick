@@ -478,18 +478,15 @@ const CreateListing: React.FC = () => {
                         alt="Image"
                       />
                       {imageView && (
-                        <Modal
-                          children={
-                            <Image
-                              src={image}
-                              width={500}
-                              height={500}
-                              alt="Image"
-                              className="lg:max-h-[80vh] h-full w-full rounded-lg"
-                            />
-                          }
-                          onClose={closeModal}
-                        />
+                        <Modal onClose={closeModal}>
+                          <Image
+                            src={image}
+                            width={500}
+                            height={500}
+                            alt="Image"
+                            className="lg:max-h-[80vh] h-full w-full rounded-lg"
+                          />
+                        </Modal>
                       )}
                     </div>
                   ))}
