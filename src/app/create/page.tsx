@@ -15,6 +15,7 @@ import axios from "axios";
 // import { url } from "inspector";
 import LoadingSpinner from "@/components/atoms/loadingSpinner";
 import { isOnline } from "@/lib/checkOnlineStatus";
+import Modal from "@/components/molecules/modals/viewImage";
 
 const listingType = [
   {
@@ -83,6 +84,8 @@ const CreateListing: React.FC = () => {
   const [bedroom, setBedroom] = useState("");
   const [bathroom, setBathroom] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [imageView, setImageView] = useState(false);
+  const [image, setImage] = useState("");
 
   const onlineStatus = isOnline();
 
@@ -138,8 +141,6 @@ const CreateListing: React.FC = () => {
   //   categoryError
   // );
 
-  console.log("productData is: ", addProductData);
-
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [productType]);
@@ -168,6 +169,7 @@ const CreateListing: React.FC = () => {
   };
 
   const clearInputField = () => {
+    toast.success("Product created successfully");
     localStorage.removeItem("imageUrl");
     setProductTitle("");
     setProductCategory("");
@@ -179,14 +181,7 @@ const CreateListing: React.FC = () => {
     setProductSpecification("");
   };
 
-  const filteredUrl = imageUrl
-    .map((image: any) => ({
-      create: { url: image.url },
-    }))
-    .map((item: any) => item.create.url)
-    .join("");
-
-  console.log("url is", filteredUrl);
+  addProductData && clearInputField();
 
   const itemListingDetails = {
     imageUrl: imageUrl.map((image: any) => ({ create: { url: image.url } })),
@@ -385,6 +380,15 @@ const CreateListing: React.FC = () => {
     }
   }, []);
 
+  const viewImage = (imageString: string) => {
+    setImageView(true);
+    setImage(imageString);
+  };
+
+  const closeModal = () => {
+    setImageView(false);
+  };
+
   return (
     <>
       <Navbar />
@@ -457,21 +461,36 @@ const CreateListing: React.FC = () => {
                   {imageUrl.map((item: any, index: number) => (
                     <div
                       key={index}
-                      className="border-2 z-10 relative rounded-lg border-customGreen p-1 w-[28%] h-[40%] m-2"
+                      className="border-2 z-[5] relative rounded-lg border-customGreen p-1 w-[28%] h-[40%] m-2"
                     >
                       <span
                         onClick={() => handleDelete(item.id)}
-                        className="text-white cursor-pointer h-6 w-6 bg-customGreen p-1 font-extrabold rounded-full absolute right-1 top-1 flex items-center justify-center"
+                        className="text-white cursor-pointer z-[6] h-6 w-6 bg-customGreen p-1 font-extrabold rounded-full absolute right-1 top-1 flex items-center justify-center"
                       >
                         X
                       </span>
                       <Image
+                        onClick={(e) => viewImage(item.url)}
                         src={item.url}
                         width={500}
                         height={500}
-                        className="w-full h-full rounded-lg"
+                        className="w-full h-full object-cover rounded-lg"
                         alt="Image"
                       />
+                      {imageView && (
+                        <Modal
+                          children={
+                            <Image
+                              src={image}
+                              width={500}
+                              height={500}
+                              alt="Image"
+                              className="lg:max-h-[80vh] h-full w-full rounded-lg"
+                            />
+                          }
+                          onClose={closeModal}
+                        />
+                      )}
                     </div>
                   ))}
 

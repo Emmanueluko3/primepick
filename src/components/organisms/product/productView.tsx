@@ -27,7 +27,7 @@ const ProductView: React.FC<productProps> = ({ product }) => {
     <>
       <div className="w-full mb-5 flex justify-between flex-col lg:flex-row p-6 border border-[#ACACAC] rounded-lg">
         <div className="flex flex-col items-center w-full lg:w-[58%]">
-          <div className="py-8 px-2 h-96">
+          <div className="py-8 px-2 w-full h-96">
             <Image
               src={selectedImage}
               width={500}

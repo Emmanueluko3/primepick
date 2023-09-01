@@ -5,7 +5,6 @@ import Suggestions from "../../components/organisms/product/suggestedPicks";
 import Navbar from "../../components/organisms/navbar";
 import Footer from "../../components/organisms/footer";
 import { useDispatch, useSelector } from "react-redux";
-import { removeFromCart } from "../../redux/actions";
 import Link from "next/link";
 import { remove, selectCartState } from "@/store/cartSlice";
 import Image from "next/image";
@@ -36,22 +35,29 @@ const Cart: React.FC = () => {
                   className="flex justify-between items-center border-b-[0.7px] mb-5 pb-5 border-[#CDCDCD]"
                 >
                   <div className="flex justify-between items-center">
-                    <input
+                    {/* <input
                       type="checkbox"
                       className="rounded-lg h-4 w-4 required:bg-customGreen checked:bg-customGreen"
-                    />
-                    <div className="rounded-lg h-24 w-32  mx-4 border p-3 border-[#828282]">
-                      <Image
-                        width={500}
-                        height={500}
-                        src={item?.imageUrls[0]}
-                        className="w-full h-full"
-                        alt="Laptop"
-                      />
-                    </div>
+                    /> */}
+                    <Link href={`/explore/${item?.id}`}>
+                      <div className="rounded-lg h-24 w-32  mr-4 border p-3 border-[#828282]">
+                        <Image
+                          width={500}
+                          height={500}
+                          src={item?.imageUrls[0]}
+                          className="w-full h-full rounded-lg"
+                          alt="Laptop"
+                        />
+                      </div>
+                    </Link>
                     <div className="flex flex-col justify-between">
-                      <h4 className="text-lg">{item.title}</h4>
-                      <p className="text-[#686767]">{item.location}</p>
+                      <h4 className="lg:text-lg text-sm">
+                        <span className="lg:hidden block">
+                          {item.title.split(" ")[0]}
+                        </span>
+                        <span className="lg:block hidden">{item.title}</span>
+                      </h4>
+                      <p className="text-[#686767] text-xs">{item.location}</p>
                     </div>
                   </div>
 
@@ -62,7 +68,7 @@ const Cart: React.FC = () => {
                     >
                       Remove
                     </button>
-                    <h3 className="text-xl font-medium">
+                    <h3 className="lg:text-xl text-sm font-medium">
                       &#8358; {item?.price}
                     </h3>
                   </div>

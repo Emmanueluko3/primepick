@@ -2,8 +2,6 @@ import { Providers } from "@/providers/provider";
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter, Roboto } from "next/font/google";
-// import { Provider } from "react-redux";
-import { wrapper } from "../store/store";
 import { Toaster } from "react-hot-toast";
 // import HomeSpinner from "@/components/atoms/homeSpinner";
 
@@ -24,6 +22,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           {/* <HomeSpinner /> */}
+          <div id="modal" className="z-[2147483647]"></div>
           <Toaster position="top-right" reverseOrder={true} />
           {children}
         </Providers>

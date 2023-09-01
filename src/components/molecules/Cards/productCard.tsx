@@ -21,13 +21,13 @@ const ProductCard: React.FC<ProductCardProps> = ({
 }) => {
   return (
     <Link href={`/explore/${id}`}>
-      <div className="w-full h-full rounded-2xl hover:bg-[#fff] hover:drop-shadow-2xl cursor-pointer">
+      <div className="w-full h-full rounded-2xl lg:hover:bg-[#fff] lg:hover:drop-shadow-2xl cursor-pointer">
         <div className="lg:h-[310px] h-52">
           <Image
             src={image}
             width={500}
             height={500}
-            className="w-full h-full object-cover rounded-t-2xl"
+            className="w-full h-[80%] object-cover rounded-t-2xl"
             alt="Laptop"
           />
         </div>
