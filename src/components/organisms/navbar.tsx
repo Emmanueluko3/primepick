@@ -49,11 +49,7 @@ const Navbar: React.FC = () => {
               }`}
             ></span>
           </button>
-          <Link
-            href="/"
-            onClick={() => setShowLinks(!showLinks)}
-            className="font-semibold lg:text-2xl text-lg"
-          >
+          <Link href="/" className="font-semibold lg:text-2xl text-lg">
             PrimePick
           </Link>
           <div className="flex ml-auto lg:hidden">
